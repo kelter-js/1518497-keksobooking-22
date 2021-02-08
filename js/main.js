@@ -1,10 +1,10 @@
 function getRandomNumber (from, to, amountDigitals) {
-  if(!(from === Math.abs(from) && to === Math.abs(to))) {
-    alert('Диапазон должен быть положительным.');
-    return;
+  from = (from !== Math.abs(from)) ? 0 : from;
+  to = (to !== Math.abs(to)) ? 0 : to;
+  if (to <= from) {
+    [to, from] = [from, to];
   }
-  let result = (Math.random() * (to - from + 1) + from).toFixed(amountDigitals);
-  return to <= from ? alert('Конец диапазона не может быть меньше, либо равен его началу.') : result;
+  return (Math.random() * (to - from + 1) + from).toFixed(amountDigitals);
 }
 
 getRandomNumber(0,5,2)
