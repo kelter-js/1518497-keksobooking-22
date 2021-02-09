@@ -1,10 +1,20 @@
-function getRandomNumber (from, to, amountDigitals) {
-  from = (from !== Math.abs(from)) ? 0 : from;
-  to = (to !== Math.abs(to)) ? 0 : to;
-  if (to <= from) {
-    [to, from] = [from, to];
+function getRandomNumber (from, to) {
+   if (to <= from) {
+    console.log('Конечное значение диапазона меньше, чем его начало. Измените входные параметры.');
+    return;
   }
-  return (Math.random() * (to - from + 1) + from).toFixed(amountDigitals);
+  const start = (from < 0) ? 0 : from;
+  const end = (to < 0) ? 0 : to;
+  return Math.floor(Math.random() * (Math.floor(end) - Math.ceil(start) + 1)) + Math.ceil(start);
 }
 
-getRandomNumber(0,5,2)
+function getRandomNumberFloat (from, to, amountDigitals) {
+  if (to <= from) {
+    console.log('Конечное значение диапазона меньше, чем его начало. Измените входные параметры.');
+    return;
+  }
+  const start = (from < 0) ? 0 : from;
+  const end = (to < 0) ? 0 : to;
+  const result = (start + Math.random() * (end - start)).toFixed(amountDigitals);
+  return result > end ? end : +result;
+}
