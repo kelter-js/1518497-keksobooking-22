@@ -1,3 +1,4 @@
+/* eslint-disable */
 function getRandomNumber (from, to) {
    if (to <= from) {
     console.log('Конечное значение диапазона меньше, чем его начало. Измените входные параметры.');
@@ -18,3 +19,4 @@ function getRandomNumberFloat (from, to, amountDigitals) {
   const result = (start + Math.random() * (end - start)).toFixed(amountDigitals);
   return result > end ? end : +result;
 }
+/* eslint-enable */
