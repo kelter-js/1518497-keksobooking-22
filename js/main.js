@@ -13,6 +13,9 @@ function getRandomNumber (from, to) {
 }
 
 function getRandomNumberFloat (from, to, amountDigitals) {
+  if (from == to) {
+    return from;
+  }
   if (to <= from) {
     console.log('Конечное значение диапазона меньше, чем его начало. Измените входные параметры.');
     return;
