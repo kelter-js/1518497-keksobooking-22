@@ -1,6 +1,6 @@
 /* eslint-disable */
 function getRandomNumber (from, to) {
-   if (to <= from) {
+   if (to < from) {
     console.log('Конечное значение диапазона меньше, чем его начало. Измените входные параметры.');
     return;
   }
