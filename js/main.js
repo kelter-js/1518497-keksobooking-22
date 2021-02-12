@@ -44,22 +44,34 @@ function getRandomNumberFloat (from, to, amountDigitals) {
 }
 
 function generatePromo () {
-  const coordinatesX = getRandomNumberFloat(35.65000, 35.70000, 5);
-  const coordinatesY = getRandomNumberFloat(139.70000, 139.80000, 5);
+  const coordinatesX = getRandomNumberFloat(35.65, 35.7, 5);
+  const coordinatesY = getRandomNumberFloat(139.7, 139.8, 5);
   const PROMO_TYPE = ['palace', 'flat', 'house', 'bungalow'];
-  const CHECK_TIME = ['12:00', '13:00', '14:00'];
   const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+  const DESCRIPTIONS = ['Small`n`cozy place to rest', 'Clean and bright, free meals twice a day', 'We sanitarize space after each our guest, its safe. Also building is isolated from city, so you can throw a party, if you wish to', 'We allow to settle our guests only if they are without any pets, no smoking or even loud music'];
+  const TITLES = ['Ravenholm', 'Edoras', 'New Vegas', 'Tristram'];
+  const minPrice = 1000;
+  const maxPrice = 5000;
+  const minValue = 1;
+  const maxRooms = 15;
+  const maxGuests = 4;
+  const maxGalleryLength = 30;
+  const checkingMinTime = 12;
+  const checkingMaxTime = 14;
 
-  function arrayShuffle (arr) {
+
+  function shuffleArray (arr) {
     const newArr = [...arr].sort(() => Math.random() - 0.5);
     newArr.length = getRandomNumber(1, newArr.length);
     return newArr;
   };
 
   function makeGalleryArray (start, end) {
-    let counter = 1 ;
-    const gallery = new Array(getRandomNumber(start, end)).fill('').map(() => `http://o0.github.io/assets/images/tokyo/hotel${counter++}.jpg`);
-    return gallery;
+    return new Array(getRandomNumber(start, end)).fill('').map((item, index) => `http://o0.github.io/assets/images/tokyo/hotel${index+1}.jpg`);
+  }
+
+  function getRandomArrayElem (arr) {
+    return arr[getRandomNumber(0, arr.length - 1)];
   }
 
   const promoObject = {
@@ -67,16 +79,16 @@ function generatePromo () {
       avatar: `img/avatars/user0${getRandomNumber(1, 8)}.png`
     },
     offer: {
-      title: 'Ravenholm',
+      title: getRandomArrayElem(TITLES),
       address: `${coordinatesX}, ${coordinatesY}`,
-      price: getRandomNumber(1000, 5000),
-      type: PROMO_TYPE[getRandomNumber(0, PROMO_TYPE.length - 1)],
-      rooms: getRandomNumber(1, 15),
-      guests: getRandomNumber(1, 4),
-      checkin: CHECK_TIME[getRandomNumber(0, CHECK_TIME.length - 1)],
-      features: arrayShuffle(FEATURES),
-      description: 'Small`n`cozy place to rest.',
-      photos: makeGalleryArray(1, 30),
+      price: getRandomNumber(minPrice, maxPrice),
+      type: getRandomArrayElem(PROMO_TYPE),
+      rooms: getRandomNumber(minValue, maxRooms),
+      guests: getRandomNumber(minValue, maxGuests),
+      checkin: `${getRandomNumber(checkingMinTime, checkingMaxTime)}:00`,
+      features: shuffleArray(FEATURES),
+      description: getRandomArrayElem(DESCRIPTIONS),
+      photos: makeGalleryArray(minValue, maxGalleryLength),
     },
     location: {
       x: coordinatesX,
@@ -87,8 +99,7 @@ function generatePromo () {
 }
 
 function generateBunchPromos () {
-  const promos = new Array(10).fill('').map(() => generatePromo());
-  return promos;
+  return new Array(10).fill('').map(() => generatePromo());
 }
 
 /* eslint-enable */
