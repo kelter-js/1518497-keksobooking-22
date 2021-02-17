@@ -53,13 +53,9 @@ function cutArrayByRandomNumber (array) {
   return array;
 };
 
-function makeGalleryArray (start, end) {
-  return new Array(getRandomNumber(start, end)).fill('').map((item, index) => `http://o0.github.io/assets/images/tokyo/hotel${index + 1}.jpg`);
-}
-
 function getRandomArrayElement (array) {
   return array[getRandomNumber(0, array.length - 1)];
 }
 
-export {getRandomNumber, getRandomNumberFloat, shuffleArray, cutArrayByRandomNumber, makeGalleryArray, getRandomArrayElement};
+export {getRandomNumber, getRandomNumberFloat, shuffleArray, cutArrayByRandomNumber, getRandomArrayElement};
 /* eslint-enable */
