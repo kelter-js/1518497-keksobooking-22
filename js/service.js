@@ -61,9 +61,13 @@ function deleteNode (node) {
   node.remove();
 };
 
-function fillNodeProperty (node, value) {
-  node.textContent = value;
+function wipeNode (node) {
+  node.innerHTML = '';
 }
 
-export {getRandomNumber, getRandomNumberFloat, shuffleArray, cutArrayByRandomNumber, getRandomArrayElement, deleteNode, fillNodeProperty};
+function switchNodeContent (condition, node, value = condition, property = 'textContent') {
+  condition ? node[property] = value : deleteNode(node);
+}
+
+export {getRandomNumber, getRandomNumberFloat, shuffleArray, cutArrayByRandomNumber, getRandomArrayElement, switchNodeContent, deleteNode, wipeNode};
 /* eslint-enable */
