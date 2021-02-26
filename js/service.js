@@ -57,5 +57,17 @@ function getRandomArrayElement (array) {
   return array[getRandomNumber(0, array.length - 1)];
 }
 
-export {getRandomNumber, getRandomNumberFloat, shuffleArray, cutArrayByRandomNumber, getRandomArrayElement};
+function deleteNode (node) {
+  node.remove();
+};
+
+function wipeNode (node) {
+  node.innerHTML = '';
+}
+
+function switchNodeContent (condition, node, value = condition, property = 'textContent') {
+  condition ? node[property] = value : deleteNode(node);
+}
+
+export {getRandomNumber, getRandomNumberFloat, shuffleArray, cutArrayByRandomNumber, getRandomArrayElement, switchNodeContent, deleteNode, wipeNode};
 /* eslint-enable */

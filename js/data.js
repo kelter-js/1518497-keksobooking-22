@@ -47,7 +47,7 @@ const COORDINATES_DIGITALS_AMOUNT = 5;
 const ARRAY_ELEMENTS_AMOUNT = 10;
 
 function makeGalleryArray (start, end) {
-  return new Array(getRandomNumber(start, end)).fill('').map((item, index) => `http://o0.github.io/assets/images/tokyo/hotel${++index}.jpg`);
+  return new Array(getRandomNumber(start, end)).fill('').map((item, index) => `http://o0.github.io/assets/images/tokyo/hotel${index + 1}.jpg`);
 }
 
 function generatePromo () {
