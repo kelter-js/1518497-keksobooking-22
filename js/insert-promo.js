@@ -46,13 +46,13 @@ function featuresEnabler (templateNode, elements) {
 }
 
 function createPhoto (src) {
-  const IMAGE_ELEMENT = document.createElement('img');
-  IMAGE_ELEMENT.classList.add('popup__photo');
-  IMAGE_ELEMENT.src = src;
-  IMAGE_ELEMENT.width = IMAGE_WIDTH;
-  IMAGE_ELEMENT.height = IMAGE_HEIGHT;
-  IMAGE_ELEMENT.alt = IMAGE_DESCRIPTION;
-  return IMAGE_ELEMENT;
+  const imageElement = document.createElement('img');
+  imageElement.classList.add('popup__photo');
+  imageElement.src = src;
+  imageElement.width = IMAGE_WIDTH;
+  imageElement.height = IMAGE_HEIGHT;
+  imageElement.alt = IMAGE_DESCRIPTION;
+  return imageElement;
 }
 
 function insertPhotos (templateNode, promoObjectPhotos) {
@@ -66,7 +66,7 @@ function describeRooms (amountOfRooms) {
 }
 
 function describeGuests (amountOfGuests) {
-  return amountOfGuests === 1 ? `гостя` : `гостей`;
+  return amountOfGuests === 1 ? 'гостя' : 'гостей';
 }
 
 function insertPromo (promo) {
