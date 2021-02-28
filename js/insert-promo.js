@@ -66,7 +66,7 @@ function describeRooms (amountOfRooms) {
 }
 
 function describeGuests (amountOfGuests) {
-  return amountOfGuests === 1 ? `${amountOfGuests} гостя` : `${amountOfGuests} гостей`;
+  return amountOfGuests === 1 ? `гостя` : `гостей`;
 }
 
 function insertPromo (promo) {
@@ -77,7 +77,7 @@ function insertPromo (promo) {
   switchNodeContent(offer.address, TEMPLATE_ADDRESS);
   switchNodeContent(offer.price, TEMPLATE_PRICE, `${offer.price} ₽/ночь`);
   switchNodeContent(offer.type, TEMPLATE_TYPE, PROMO_TYPE[offer.type]);
-  switchNodeContent(offer.rooms && offer.guests, TEMPLATE_CAPACITY, `${describeRooms(offer.rooms)} для ${describeGuests(offer.guests)}`);
+  switchNodeContent(offer.rooms && offer.guests, TEMPLATE_CAPACITY, `${describeRooms(offer.rooms)} для ${offer.guests} ${describeGuests(offer.guests)}`);
   switchNodeContent(offer.checkin && offer.checkout, TEMPLATE_TIME, `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`);
   featuresEnabler(TEMPLATE_FEATURES, featuresChecker(TEMPLATE_FEATURES, offer.features));
   switchNodeContent(offer.description, TEMPLATE_DESCRIPTION);

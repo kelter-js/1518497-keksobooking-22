@@ -20,11 +20,12 @@ function onChangeType () {
 }
 
 function onChangeCheckTime (evt) {
-  if (evt.target === CHECKIN_TIME) {
-    CHECKOUT_TIME.selectedIndex = CHECKIN_TIME.selectedIndex;
-  }
-  if (evt.target === CHECKOUT_TIME) {
-    CHECKIN_TIME.selectedIndex = CHECKOUT_TIME.selectedIndex;
+  switch (evt.target) {
+    case CHECKIN_TIME:
+      CHECKOUT_TIME.selectedIndex = CHECKIN_TIME.selectedIndex;
+      break;
+    case CHECKOUT_TIME:
+      CHECKIN_TIME.selectedIndex = CHECKOUT_TIME.selectedIndex;
   }
 }
 
