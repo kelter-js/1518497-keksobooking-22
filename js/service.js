@@ -69,5 +69,13 @@ function switchNodeContent (condition, node, value = condition, property = 'text
   condition ? node[property] = value : deleteNode(node);
 }
 
-export {getRandomNumber, getRandomNumberFloat, shuffleArray, cutArrayByRandomNumber, getRandomArrayElement, switchNodeContent, deleteNode, wipeNode};
+function addClassToNode (node, nodeClass) {
+  node.classList.add(nodeClass);
+}
+
+function setElementsProperty (nodes, condition) {
+  [...nodes].map((item) => switchNodeContent(condition, item, condition, 'disabled'));
+}
+
+export {getRandomNumber, getRandomNumberFloat, shuffleArray, cutArrayByRandomNumber, getRandomArrayElement, switchNodeContent, deleteNode, wipeNode, addClassToNode, setElementsProperty};
 /* eslint-enable */

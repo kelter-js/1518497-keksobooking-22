@@ -3,6 +3,12 @@ import {switchNodeContent, wipeNode} from './service.js';
 const IMAGE_WIDTH = 45;
 const IMAGE_HEIGHT = 40;
 const IMAGE_DESCRIPTION = 'Фотография жилья';
+const MIN_GUEST_SELECTOR = 1;
+const MAX_GUEST_SELECTOR = 4;
+const GUEST_WORD_SET = {
+  one: 'гостя',
+  few: 'гостей',
+};
 
 const PROMO_TYPE = {
   flat: 'Квартира',
@@ -65,8 +71,13 @@ function describeRooms (amountOfRooms) {
   return AMOUNT_OF_ROOMS_DESCRIPTION[amountOfRooms];
 }
 
-function describeGuests (amountOfGuests) {
-  return amountOfGuests === 1 ? 'гостя' : 'гостей';
+function pluralSelector ({one, few, many}, selector) {
+  if (selector === MIN_GUEST_SELECTOR) {
+    return one;
+  }
+  if (selector <= MAX_GUEST_SELECTOR) {
+    return few || many;
+  }
 }
 
 function insertPromo (promo) {
@@ -77,7 +88,7 @@ function insertPromo (promo) {
   switchNodeContent(offer.address, TEMPLATE_ADDRESS);
   switchNodeContent(offer.price, TEMPLATE_PRICE, `${offer.price} ₽/ночь`);
   switchNodeContent(offer.type, TEMPLATE_TYPE, PROMO_TYPE[offer.type]);
-  switchNodeContent(offer.rooms && offer.guests, TEMPLATE_CAPACITY, `${describeRooms(offer.rooms)} для ${offer.guests} ${describeGuests(offer.guests)}`);
+  switchNodeContent(offer.rooms && offer.guests, TEMPLATE_CAPACITY, `${describeRooms(offer.rooms)} для ${offer.guests} ${pluralSelector(GUEST_WORD_SET, offer.guests)}`);
   switchNodeContent(offer.checkin && offer.checkout, TEMPLATE_TIME, `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`);
   featuresEnabler(TEMPLATE_FEATURES, featuresChecker(TEMPLATE_FEATURES, offer.features));
   switchNodeContent(offer.description, TEMPLATE_DESCRIPTION);

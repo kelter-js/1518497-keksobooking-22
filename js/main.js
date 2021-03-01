@@ -4,9 +4,10 @@ import * as service from './service.js';
 import * as validator from './validator.js';
 import './checker.js';
 import {insertPromo} from './insert-promo.js';
+import {pageEnabler} from './page-enabler.js';
+import {pageDisabler} from './page-disabler.js';
 
+pageDisabler();
 const generatedPromos = generateBunchPromos();
-
-insertPromo(generatedPromos[0]);
 
 /* eslint-enable */
