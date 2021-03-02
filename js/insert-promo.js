@@ -24,20 +24,6 @@ const AMOUNT_OF_ROOMS_DESCRIPTION = {
   4: '4 комнаты',
 }
 
-const CARD_TEMPLATE = document.querySelector('#card').content;
-const TEMPLATE_INNER = CARD_TEMPLATE.querySelector('.popup').cloneNode(true);
-const TEMPLATE_TITLE = TEMPLATE_INNER.querySelector('.popup__title');
-const TEMPLATE_ADDRESS = TEMPLATE_INNER.querySelector('.popup__text--address');
-const TEMPLATE_PRICE = TEMPLATE_INNER.querySelector('.popup__text--price');
-const TEMPLATE_TYPE = TEMPLATE_INNER.querySelector('.popup__type');
-const TEMPLATE_CAPACITY = TEMPLATE_INNER.querySelector('.popup__text--capacity');
-const TEMPLATE_TIME = TEMPLATE_INNER.querySelector('.popup__text--time');
-const TEMPLATE_FEATURES = TEMPLATE_INNER.querySelector('.popup__features');
-const TEMPLATE_DESCRIPTION = TEMPLATE_INNER.querySelector('.popup__description');
-const TEMPLATE_PHOTOS = TEMPLATE_INNER.querySelector('.popup__photos');
-const TEMPLATE_AVATAR = TEMPLATE_INNER.querySelector('.popup__avatar');
-const DESTINATION = document.querySelector('.map__canvas');
-
 function generateFeaturesClasses (promoObjectFeatures) {
   return promoObjectFeatures.map((item) => `.popup__feature--${item}`);
 }
@@ -84,18 +70,32 @@ function insertPromo (promo) {
   const offer = promo.offer;
   const author = promo.author;
 
-  switchNodeContent(offer.title, TEMPLATE_TITLE);
-  switchNodeContent(offer.address, TEMPLATE_ADDRESS);
-  switchNodeContent(offer.price, TEMPLATE_PRICE, `${offer.price} ₽/ночь`);
-  switchNodeContent(offer.type, TEMPLATE_TYPE, PROMO_TYPE[offer.type]);
-  switchNodeContent(offer.rooms && offer.guests, TEMPLATE_CAPACITY, `${describeRooms(offer.rooms)} для ${offer.guests} ${pluralSelector(GUEST_WORD_SET, offer.guests)}`);
-  switchNodeContent(offer.checkin && offer.checkout, TEMPLATE_TIME, `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`);
-  featuresEnabler(TEMPLATE_FEATURES, featuresChecker(TEMPLATE_FEATURES, offer.features));
-  switchNodeContent(offer.description, TEMPLATE_DESCRIPTION);
-  insertPhotos(TEMPLATE_PHOTOS, offer.photos);
-  switchNodeContent(author.avatar, TEMPLATE_AVATAR, author.avatar, 'src');
+  const cardTemplate = document.querySelector('#card').content;
+  const templateInner = cardTemplate.querySelector('.popup').cloneNode(true);
+  const templateTitle = templateInner.querySelector('.popup__title');
+  const templateAddress = templateInner.querySelector('.popup__text--address');
+  const templatePrice = templateInner.querySelector('.popup__text--price');
+  const templateType = templateInner.querySelector('.popup__type');
+  const templateCapacity = templateInner.querySelector('.popup__text--capacity');
+  const templateTime = templateInner.querySelector('.popup__text--time');
+  const templateFeatures = templateInner.querySelector('.popup__features');
+  const templateDescription = templateInner.querySelector('.popup__description');
+  const templatePhotos = templateInner.querySelector('.popup__photos');
+  const templateAvatar = templateInner.querySelector('.popup__avatar');
 
-  DESTINATION.append(TEMPLATE_INNER);
+
+  switchNodeContent(offer.title, templateTitle);
+  switchNodeContent(offer.address, templateAddress);
+  switchNodeContent(offer.price, templatePrice, `${offer.price} ₽/ночь`);
+  switchNodeContent(offer.type, templateType, PROMO_TYPE[offer.type]);
+  switchNodeContent(offer.rooms && offer.guests, templateCapacity, `${describeRooms(offer.rooms)} для ${offer.guests} ${pluralSelector(GUEST_WORD_SET, offer.guests)}`);
+  switchNodeContent(offer.checkin && offer.checkout, templateTime, `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`);
+  featuresEnabler(templateFeatures, featuresChecker(templateFeatures, offer.features));
+  switchNodeContent(offer.description, templateDescription);
+  insertPhotos(templatePhotos, offer.photos);
+  switchNodeContent(author.avatar, templateAvatar, author.avatar, 'src');
+
+  return templateInner;
 }
 
 export {insertPromo};

@@ -73,9 +73,17 @@ function addClassToNode (node, nodeClass) {
   node.classList.add(nodeClass);
 }
 
-function setElementsProperty (nodes, condition) {
-  [...nodes].map((item) => switchNodeContent(condition, item, condition, 'disabled'));
+function deleteClassFromNode (node, nodeClass) {
+  node.classList.remove(nodeClass);
 }
 
-export {getRandomNumber, getRandomNumberFloat, shuffleArray, cutArrayByRandomNumber, getRandomArrayElement, switchNodeContent, deleteNode, wipeNode, addClassToNode, setElementsProperty};
+function setNodeProperty (element, propertyName, value) {
+  element[propertyName] = value;
+}
+
+function setElementsProperty (nodes, propertyName, value) {
+  [...nodes].map((item) => setNodeProperty(item, propertyName, value));
+}
+
+export {getRandomNumber, getRandomNumberFloat, shuffleArray, cutArrayByRandomNumber, getRandomArrayElement, switchNodeContent, deleteNode, wipeNode, addClassToNode, setElementsProperty, deleteClassFromNode, setNodeProperty};
 /* eslint-enable */

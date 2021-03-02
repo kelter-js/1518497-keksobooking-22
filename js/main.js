@@ -1,13 +1,11 @@
 /* eslint-disable */
 import {generatePromo, generateBunchPromos} from './data.js';
-import * as service from './service.js';
-import * as validator from './validator.js';
+import './service.js';
+import './validator.js';
 import './checker.js';
 import {insertPromo} from './insert-promo.js';
-import {pageEnabler} from './page-enabler.js';
+import {map} from './map.js';
 import {pageDisabler} from './page-disabler.js';
-
-pageDisabler();
-const generatedPromos = generateBunchPromos();
+import './page-enabler.js';
 
 /* eslint-enable */
