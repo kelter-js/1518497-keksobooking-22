@@ -1,13 +1,24 @@
 import {switchNodeContent, wipeNode} from './service.js';
 
+const CARD_TEMPLATE = document.querySelector('#card').content;
 const IMAGE_WIDTH = 45;
 const IMAGE_HEIGHT = 40;
 const IMAGE_DESCRIPTION = 'Фотография жилья';
-const MIN_GUEST_SELECTOR = 1;
-const MAX_GUEST_SELECTOR = 4;
+
+const MIN_GUESTS_SELECTOR = 1;
+const MAX_GUESTS_SELECTOR = 4;
 const GUEST_WORD_SET = {
   one: 'гостя',
   few: 'гостей',
+  many: 'гостей',
+};
+
+const MIN_ROOMS_SELECTOR = 1;
+const MIDDLE_ROOMS_SELECTOR = 4;
+const ROOM_WORD_SET = {
+  one: 'комната',
+  few: 'комнаты',
+  many: 'комнат',
 };
 
 const PROMO_TYPE = {
@@ -16,13 +27,6 @@ const PROMO_TYPE = {
   house: 'Дом',
   palace: 'Дворец',
 };
-
-const AMOUNT_OF_ROOMS_DESCRIPTION = {
-  1: '1 комната',
-  2: '2 комнаты',
-  3: '3 комнаты',
-  4: '4 комнаты',
-}
 
 function generateFeaturesClasses (promoObjectFeatures) {
   return promoObjectFeatures.map((item) => `.popup__feature--${item}`);
@@ -52,26 +56,20 @@ function insertPhotos (templateNode, promoObjectPhotos) {
   promoObjectPhotos.map((item) => templateNode.append(createPhoto(item)));
 }
 
-function describeRooms (amountOfRooms) {
-  if(!AMOUNT_OF_ROOMS_DESCRIPTION[amountOfRooms]) return `${amountOfRooms} комнат`
-  return AMOUNT_OF_ROOMS_DESCRIPTION[amountOfRooms];
-}
-
-function pluralSelector ({one, few, many}, selector) {
-  if (selector === MIN_GUEST_SELECTOR) {
+function pluralSelector ({one, few, many}, selector, minValue, maxValue) {
+  if (selector === minValue) {
     return one;
   }
-  if (selector <= MAX_GUEST_SELECTOR) {
-    return few || many;
+  if (selector <= maxValue) {
+    return few;
   }
+  return many;
 }
 
 function insertPromo (promo) {
   const offer = promo.offer;
   const author = promo.author;
-
-  const cardTemplate = document.querySelector('#card').content;
-  const templateInner = cardTemplate.querySelector('.popup').cloneNode(true);
+  const templateInner = CARD_TEMPLATE.querySelector('.popup').cloneNode(true);
   const templateTitle = templateInner.querySelector('.popup__title');
   const templateAddress = templateInner.querySelector('.popup__text--address');
   const templatePrice = templateInner.querySelector('.popup__text--price');
@@ -88,7 +86,7 @@ function insertPromo (promo) {
   switchNodeContent(offer.address, templateAddress);
   switchNodeContent(offer.price, templatePrice, `${offer.price} ₽/ночь`);
   switchNodeContent(offer.type, templateType, PROMO_TYPE[offer.type]);
-  switchNodeContent(offer.rooms && offer.guests, templateCapacity, `${describeRooms(offer.rooms)} для ${offer.guests} ${pluralSelector(GUEST_WORD_SET, offer.guests)}`);
+  switchNodeContent(offer.rooms && offer.guests, templateCapacity, `${offer.rooms} ${pluralSelector(ROOM_WORD_SET, offer.rooms, MIN_ROOMS_SELECTOR, MIDDLE_ROOMS_SELECTOR)} для ${offer.guests} ${pluralSelector(GUEST_WORD_SET, offer.guests, MIN_GUESTS_SELECTOR, MAX_GUESTS_SELECTOR)}`);
   switchNodeContent(offer.checkin && offer.checkout, templateTime, `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`);
   featuresEnabler(templateFeatures, featuresChecker(templateFeatures, offer.features));
   switchNodeContent(offer.description, templateDescription);

@@ -77,12 +77,12 @@ function deleteClassFromNode (node, nodeClass) {
   node.classList.remove(nodeClass);
 }
 
-function setNodeProperty (element, propertyName, value) {
-  element[propertyName] = value;
+function setNodeProperty (element, name, value) {
+  element[name] = value;
 }
 
-function setElementsProperty (nodes, propertyName, value) {
-  [...nodes].map((item) => setNodeProperty(item, propertyName, value));
+function setElementsProperty (nodes, name, value) {
+  [...nodes].map((node) => setNodeProperty(node, name, value));
 }
 
 export {getRandomNumber, getRandomNumberFloat, shuffleArray, cutArrayByRandomNumber, getRandomArrayElement, switchNodeContent, deleteNode, wipeNode, addClassToNode, setElementsProperty, deleteClassFromNode, setNodeProperty};

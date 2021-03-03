@@ -5,13 +5,13 @@ const ENABLE_CONDITION = true;
 const DISABLE_CONDITION = false;
 const ADDRESS_ELEMENT = document.querySelector('#address');
 
-function onMapLoad (latitude, longitude) {
-  return function () {
+function onMapLoad ({lat, lng}) {
+  return () => {
     deleteClassFromNode(PROMO_ELEMENT, 'ad-form--disabled');
     deleteClassFromNode(FILTER_ELEMENT, 'map__filters--disabled');
     setElementsProperty(PROMO_FIELDSET_ELEMENTS, 'disabled', DISABLE_CONDITION);
     setElementsProperty(FILTER_SELECT_ELEMENTS, 'disabled', DISABLE_CONDITION);
-    setNodeProperty(ADDRESS_ELEMENT, 'value', `${latitude}, ${longitude}`);
+    setNodeProperty(ADDRESS_ELEMENT, 'value', `${lat}, ${lng}`);
     setNodeProperty(ADDRESS_ELEMENT, 'readOnly', ENABLE_CONDITION);
   }
 }
