@@ -85,5 +85,9 @@ function setElementsProperty (nodes, name, value) {
   [...nodes].map((node) => setNodeProperty(node, name, value));
 }
 
-export {getRandomNumber, getRandomNumberFloat, shuffleArray, cutArrayByRandomNumber, getRandomArrayElement, switchNodeContent, deleteNode, wipeNode, addClassToNode, setElementsProperty, deleteClassFromNode, setNodeProperty};
+function setElementProperties (element, names, values) {
+  names.map((item, index) => element[item] = values[index])
+}
+
+export {getRandomNumber, getRandomNumberFloat, shuffleArray, cutArrayByRandomNumber, getRandomArrayElement, switchNodeContent, deleteNode, wipeNode, addClassToNode, setElementsProperty, deleteClassFromNode, setNodeProperty, setElementProperties};
 /* eslint-enable */
