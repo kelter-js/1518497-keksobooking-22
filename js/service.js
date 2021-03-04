@@ -69,5 +69,21 @@ function switchNodeContent (condition, node, value = condition, property = 'text
   condition ? node[property] = value : deleteNode(node);
 }
 
-export {getRandomNumber, getRandomNumberFloat, shuffleArray, cutArrayByRandomNumber, getRandomArrayElement, switchNodeContent, deleteNode, wipeNode};
+function addClassToNode (node, nodeClass) {
+  node.classList.add(nodeClass);
+}
+
+function deleteClassFromNode (node, nodeClass) {
+  node.classList.remove(nodeClass);
+}
+
+function setNodeProperty (element, name, value) {
+  element[name] = value;
+}
+
+function setElementsProperty (nodes, name, value) {
+  [...nodes].map((node) => setNodeProperty(node, name, value));
+}
+
+export {getRandomNumber, getRandomNumberFloat, shuffleArray, cutArrayByRandomNumber, getRandomArrayElement, switchNodeContent, deleteNode, wipeNode, addClassToNode, setElementsProperty, deleteClassFromNode, setNodeProperty};
 /* eslint-enable */
