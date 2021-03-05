@@ -1,4 +1,4 @@
-import {switchNodeContent, wipeNode} from './service.js';
+import {switchNodeContent, wipeNode, pluralSelector} from './service.js';
 
 const CARD_TEMPLATE = document.querySelector('#card').content;
 const IMAGE_WIDTH = 45;
@@ -54,16 +54,6 @@ function createPhoto (src) {
 function insertPhotos (templateNode, promoObjectPhotos) {
   wipeNode(templateNode);
   promoObjectPhotos.map((item) => templateNode.append(createPhoto(item)));
-}
-
-function pluralSelector ({one, few, many}, selector, minValue, maxValue) {
-  if (selector === minValue) {
-    return one;
-  }
-  if (selector <= maxValue) {
-    return few;
-  }
-  return many;
 }
 
 function insertPromo (promo) {

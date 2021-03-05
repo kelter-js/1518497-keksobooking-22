@@ -89,5 +89,15 @@ function setElementProperties (element, names, values) {
   names.map((item, index) => element[item] = values[index])
 }
 
-export {getRandomNumber, getRandomNumberFloat, shuffleArray, cutArrayByRandomNumber, getRandomArrayElement, switchNodeContent, deleteNode, wipeNode, addClassToNode, setElementsProperty, deleteClassFromNode, setNodeProperty, setElementProperties};
+function pluralSelector ({one, few, many}, selector, minValue, maxValue, firstCondition = selector == minValue, secondCondition = selector <= maxValue) {
+  if (firstCondition) {
+    return one;
+  }
+  if (secondCondition) {
+    return few;
+  }
+  return many;
+}
+
+export {getRandomNumber, getRandomNumberFloat, shuffleArray, cutArrayByRandomNumber, getRandomArrayElement, switchNodeContent, deleteNode, wipeNode, addClassToNode, setElementsProperty, deleteClassFromNode, setNodeProperty, setElementProperties, pluralSelector};
 /* eslint-enable */
