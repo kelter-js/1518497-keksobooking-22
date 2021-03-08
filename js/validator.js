@@ -22,11 +22,8 @@ const MAX_PROMO_HEADER_LENGTH = 100;
 const ENABLE_PROPERTY = true;
 const PRICE_ELEMENT_TYPE = 'number';
 const MAX_PRICE_BY_NIGHT =  1000000;
-const FIRST_GUESTS_GROUP = [2];
-const SECOND_GUESTS_GROUP = [1, 2];
-const THIRD_GUESTS_GROUP = [0, 1, 2];
-const FOURTH_GUESTS_GROUP = [3];
-const SYNC_GROUP_OPTIONS = [filterGuestsList.bind(null, AMOUNT_OF_GUESTS_ELEMENT, FIRST_GUESTS_GROUP), filterGuestsList.bind(null, AMOUNT_OF_GUESTS_ELEMENT, SECOND_GUESTS_GROUP), filterGuestsList.bind(null, AMOUNT_OF_GUESTS_ELEMENT, THIRD_GUESTS_GROUP),  filterGuestsList.bind(null, AMOUNT_OF_GUESTS_ELEMENT, FOURTH_GUESTS_GROUP)];
+const GUESTS_GROUP = [0, 1, 2, 3];
+const SYNC_GROUP_OPTIONS = [filterGuestsList.bind(null, AMOUNT_OF_GUESTS_ELEMENT, GUESTS_GROUP[2]), filterGuestsList.bind(null, AMOUNT_OF_GUESTS_ELEMENT, GUESTS_GROUP[1, 2]), filterGuestsList.bind(null, AMOUNT_OF_GUESTS_ELEMENT, GUESTS_GROUP[0, 1, 2]),  filterGuestsList.bind(null, AMOUNT_OF_GUESTS_ELEMENT, GUESTS_GROUP[3])];
 
 const PROMO_HEADER_MESSAGE_WORDSET = {
   one: `Заголовок объявления не может быть меньше, чем ${MIN_PROMO_HEADER_LENGTH}.`,
