@@ -26,6 +26,7 @@ const FIRST_GUESTS_GROUP = [2];
 const SECOND_GUESTS_GROUP = [1, 2];
 const THIRD_GUESTS_GROUP = [0, 1, 2];
 const FOURTH_GUESTS_GROUP = [3];
+const SYNC_GROUP_OPTIONS = [filterGuestsList.bind(null, AMOUNT_OF_GUESTS_ELEMENT, FIRST_GUESTS_GROUP), filterGuestsList.bind(null, AMOUNT_OF_GUESTS_ELEMENT, SECOND_GUESTS_GROUP), filterGuestsList.bind(null, AMOUNT_OF_GUESTS_ELEMENT, THIRD_GUESTS_GROUP),  filterGuestsList.bind(null, AMOUNT_OF_GUESTS_ELEMENT, FOURTH_GUESTS_GROUP)];
 
 const PROMO_HEADER_MESSAGE_WORDSET = {
   one: `Заголовок объявления не может быть меньше, чем ${MIN_PROMO_HEADER_LENGTH}.`,
@@ -89,24 +90,8 @@ function enableGuests (guests) {
 
 function onChangeSyncGroupElements (mainGroup, syncGroup) {
   return () => {
-    switch (mainGroup.selectedIndex) {
-      case 0:
-        enableGuests(syncGroup);
-        filterGuestsList(syncGroup, FIRST_GUESTS_GROUP);
-        break;
-      case 1:
-        enableGuests(syncGroup);
-        filterGuestsList(syncGroup, SECOND_GUESTS_GROUP);
-        break;
-      case 2:
-        enableGuests(syncGroup);
-        filterGuestsList(syncGroup, THIRD_GUESTS_GROUP);
-        break;
-      default:
-        enableGuests(syncGroup);
-        filterGuestsList(syncGroup, FOURTH_GUESTS_GROUP);
-        break;
-    }
+    enableGuests(syncGroup);
+    SYNC_GROUP_OPTIONS[mainGroup.selectedIndex]();
   }
 }
 
