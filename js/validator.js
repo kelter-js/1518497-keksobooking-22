@@ -1,4 +1,4 @@
-import {setNodeProperty, setElementProperties, pluralSelector, deleteNode} from './service.js';
+import {setNodeProperty, setElementProperties, pluralSelector, wipeNode, setNodeContent} from './service.js';
 
 const TYPE_PRICES = [
   0,
@@ -11,9 +11,9 @@ const TYPE_SELECT_ELEMENT = document.querySelector('#type');
 const PRICE_BY_NIGHT = document.querySelector('#price');
 const CHECKIN_TIME = document.querySelector('#timein');
 const CHECKOUT_TIME = document.querySelector('#timeout');
-const AMOUNT_OF_ROOMS_ELEMENT = document.querySelector('#room_number');
-const AMOUNT_OF_GUESTS_ELEMENT = [...document.querySelectorAll('#capacity > option')];
-
+const AMOUNT_OF_ROOMS = document.querySelector('#room_number');
+const GUESTS_AMOUNT_ELEMENT = document.querySelector('#capacity');
+const AMOUNT_OF_GUESTS = [...GUESTS_AMOUNT_ELEMENT.querySelectorAll('option')];
 const CHECKOUT_TIME_FIELDSET = document.querySelector('.ad-form__element--time');
 const PROMO_HEADER_ELEMENT = document.querySelector('#title');
 
@@ -22,10 +22,11 @@ const MAX_PROMO_HEADER_LENGTH = 100;
 const ENABLE_PROPERTY = true;
 const PRICE_ELEMENT_TYPE = 'number';
 const MAX_PRICE_BY_NIGHT =  1000000;
-const FIRST_GUESTS_GROUP = [2];
-const SECOND_GUESTS_GROUP = [1, 2];
-const THIRD_GUESTS_GROUP = [0, 1, 2];
-const FOURTH_GUESTS_GROUP = [3];
+const FIRST_GUESTS_OPTION = [AMOUNT_OF_GUESTS[2]];
+const SECOND_GUESTS_OPTION = [AMOUNT_OF_GUESTS[1], AMOUNT_OF_GUESTS[2]];
+const THIRD_GUESTS_OPTION = [AMOUNT_OF_GUESTS[0], AMOUNT_OF_GUESTS[1], AMOUNT_OF_GUESTS[2]];
+const FOURTH_GUESTS_OPTION = [AMOUNT_OF_GUESTS[3]];
+const SYNC_GROUP_OPTIONS = [FIRST_GUESTS_OPTION, SECOND_GUESTS_OPTION, THIRD_GUESTS_OPTION, FOURTH_GUESTS_OPTION];
 
 const PROMO_HEADER_MESSAGE_WORDSET = {
   one: `Заголовок объявления не может быть меньше, чем ${MIN_PROMO_HEADER_LENGTH}.`,
@@ -44,6 +45,10 @@ function elementValiditySetter (element, validityMessage) {
   element.reportValidity();
 }
 
+function onElementInput () {
+  elementValiditySetter(this, '');
+}
+
 function onElementChange (wordset, min, max) {
   return (evt) => {
     const target = evt.currentTarget;
@@ -54,70 +59,40 @@ function onElementChange (wordset, min, max) {
   }
 }
 
-function onElementInput () {
-  this.setCustomValidity('');
-  this.reportValidity();
+function getCurrentPrice () {
+  return TYPE_PRICES[TYPE_SELECT_ELEMENT.selectedIndex];
 }
 
-function onChangeType () {
-  PRICE_BY_NIGHT.placeholder = TYPE_PRICES[TYPE_SELECT_ELEMENT.selectedIndex];
-  PRICE_BY_NIGHT.min = PRICE_BY_NIGHT.placeholder;
-}
-
-function onChangeCheckTime (evt) {
-  switch (evt.target) {
-    case CHECKIN_TIME:
-      CHECKOUT_TIME.selectedIndex = CHECKIN_TIME.selectedIndex;
-      break;
-    case CHECKOUT_TIME:
-      CHECKIN_TIME.selectedIndex = CHECKOUT_TIME.selectedIndex;
+function onChangeType (element) {
+  return () => {
+    const currentPrice = getCurrentPrice();
+    setElementProperties(element, ['placeholder', 'min'], [currentPrice, currentPrice])
   }
 }
 
-function filterGuestsList (guests, guestPlaces) {
-  guests.map((item, index) => {
-    if(!guestPlaces.includes(index)) {
-      deleteNode(item);
-    }
-  })
+function onChangeCheckTime (firstDependent, secondDependent) {
+  return (evt) => {
+    const index = evt.target.selectedIndex;
+    setNodeProperty(firstDependent, 'selectedIndex', index);
+    setNodeProperty(secondDependent, 'selectedIndex', index);
+  }
 }
 
-function enableGuests (guests) {
-  const currentGuests = document.querySelector('#capacity');
-  guests.map((item) => currentGuests.append(item));
-}
-
-function onChangeSyncGroupElements (mainGroup, syncGroup) {
+function onChangeSyncGroupElements (mainGroup, syncGroup, options) {
   return () => {
-    switch (mainGroup.selectedIndex) {
-      case 0:
-        enableGuests(syncGroup);
-        filterGuestsList(syncGroup, FIRST_GUESTS_GROUP);
-        break;
-      case 1:
-        enableGuests(syncGroup);
-        filterGuestsList(syncGroup, SECOND_GUESTS_GROUP);
-        break;
-      case 2:
-        enableGuests(syncGroup);
-        filterGuestsList(syncGroup, THIRD_GUESTS_GROUP);
-        break;
-      default:
-        enableGuests(syncGroup);
-        filterGuestsList(syncGroup, FOURTH_GUESTS_GROUP);
-        break;
-    }
+    wipeNode(syncGroup);
+    setNodeContent(syncGroup, options[mainGroup.selectedIndex]);
   }
 }
 
 setNodeProperty(PROMO_HEADER_ELEMENT, 'required', ENABLE_PROPERTY);
-setElementProperties(PRICE_BY_NIGHT, ['placeholder', 'min', 'required', 'type', 'max'], [TYPE_PRICES[TYPE_SELECT_ELEMENT.selectedIndex], TYPE_PRICES[TYPE_SELECT_ELEMENT.selectedIndex], ENABLE_PROPERTY, PRICE_ELEMENT_TYPE, MAX_PRICE_BY_NIGHT]);
-onChangeSyncGroupElements(AMOUNT_OF_ROOMS_ELEMENT, AMOUNT_OF_GUESTS_ELEMENT)();
+setElementProperties(PRICE_BY_NIGHT, ['placeholder', 'min', 'required', 'type', 'max'], [getCurrentPrice(), getCurrentPrice(), ENABLE_PROPERTY, PRICE_ELEMENT_TYPE, MAX_PRICE_BY_NIGHT]);
+onChangeSyncGroupElements(AMOUNT_OF_ROOMS, GUESTS_AMOUNT_ELEMENT, SYNC_GROUP_OPTIONS)();
 
 PROMO_HEADER_ELEMENT.addEventListener('change', onElementChange(PROMO_HEADER_MESSAGE_WORDSET, MIN_PROMO_HEADER_LENGTH, MAX_PROMO_HEADER_LENGTH));
 PROMO_HEADER_ELEMENT.addEventListener('input', onElementInput);
 PRICE_BY_NIGHT.addEventListener('change', onElementChange(PROMO_PRICE_MESSAGE_WORDSET, TYPE_PRICES[TYPE_SELECT_ELEMENT.selectedIndex], MAX_PRICE_BY_NIGHT));
 PRICE_BY_NIGHT.addEventListener('input', onElementInput);
-CHECKOUT_TIME_FIELDSET.addEventListener('change', onChangeCheckTime);
-TYPE_SELECT_ELEMENT.addEventListener('change', onChangeType);
-AMOUNT_OF_ROOMS_ELEMENT.addEventListener('change', onChangeSyncGroupElements(AMOUNT_OF_ROOMS_ELEMENT, AMOUNT_OF_GUESTS_ELEMENT))
+CHECKOUT_TIME_FIELDSET.addEventListener('change', onChangeCheckTime(CHECKOUT_TIME, CHECKIN_TIME));
+TYPE_SELECT_ELEMENT.addEventListener('change', onChangeType(PRICE_BY_NIGHT));
+AMOUNT_OF_ROOMS.addEventListener('change', onChangeSyncGroupElements(AMOUNT_OF_ROOMS, GUESTS_AMOUNT_ELEMENT, SYNC_GROUP_OPTIONS));

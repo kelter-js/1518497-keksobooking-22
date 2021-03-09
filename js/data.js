@@ -71,8 +71,8 @@ function generatePromo () {
       photos: makeGalleryArray(MIN_GALLERY_LENGTH, MAX_GALLERY_LENGTH),
     },
     location: {
-      lng: lng,
-      lat: lat,
+      lng,
+      lat,
     },
   }
 

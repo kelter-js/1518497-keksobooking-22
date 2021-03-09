@@ -65,6 +65,10 @@ function wipeNode (node) {
   node.innerHTML = '';
 }
 
+function setNodeContent (node, elements) {
+  elements.map((element) => node.append(element));
+}
+
 function switchNodeContent (condition, node, value = condition, property = 'textContent') {
   condition ? node[property] = value : deleteNode(node);
 }
@@ -99,5 +103,5 @@ function pluralSelector ({one, few, many}, selector, minValue, maxValue, firstCo
   return many;
 }
 
-export {getRandomNumber, getRandomNumberFloat, shuffleArray, cutArrayByRandomNumber, getRandomArrayElement, switchNodeContent, deleteNode, wipeNode, addClassToNode, setElementsProperty, deleteClassFromNode, setNodeProperty, setElementProperties, pluralSelector};
+export {getRandomNumber, getRandomNumberFloat, shuffleArray, cutArrayByRandomNumber, getRandomArrayElement, switchNodeContent, deleteNode, wipeNode, addClassToNode, setElementsProperty, deleteClassFromNode, setNodeProperty, setElementProperties, pluralSelector, setNodeContent};
 /* eslint-enable */
