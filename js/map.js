@@ -1,19 +1,19 @@
 /* eslint-disable */
 import {onMapLoad, ADDRESS_ELEMENT} from './page-enabler.js';
 import {setNodeProperty} from './service.js';
-import {generateBunchPromos} from './data.js';
+import {generatedPromos} from './data.js';
 import {insertPromo} from './insert-promo.js';
-
-const generatedPromos = generateBunchPromos();
 
 const TOKYO_LOCATION = {
   lat: 35.6894,
   lng: 139.692,
 };
+
 const TOKYO_CENTER_LOCATION = {
   lat: 35.65631,
   lng: 139.75671,
 };
+
 const MAP_INSTANT_ZOOM = 10;
 const MAIN_ICON_SIZES = [42, 42];
 const MAIN_ICON_ANCHOR_COORDINATES = [21, 42];
@@ -26,6 +26,7 @@ const MAIN_PIN_ICON = L.icon({
   iconSize: MAIN_ICON_SIZES,
   iconAnchor: MAIN_ICON_ANCHOR_COORDINATES,
 });
+
 const PIN_ICON = L.icon({
   iconUrl: './img/pin.svg',
   iconSize: ICON_SIZES,
@@ -60,18 +61,20 @@ L.tileLayer(
   },
 ).addTo(map);
 
-generatedPromos.forEach(({author, offer, location}) => {
-  const marker = L.marker(
-    location,
-    {
-      icon: PIN_ICON,
-    },
-  );
+generatedPromos.then((result) => {
+  result.forEach(({author, offer, location}) => {
+    const marker = L.marker(
+      location,
+      {
+        icon: PIN_ICON,
+      },
+    );
 
-  marker
-    .addTo(map)
-    .bindPopup(insertPromo({author, offer}));
-});
+    marker
+      .addTo(map)
+      .bindPopup(insertPromo({author, offer}));
+  });
+})
 
 export {map}
 

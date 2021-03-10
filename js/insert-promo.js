@@ -1,4 +1,4 @@
-import {switchNodeContent, wipeNode, pluralSelector} from './service.js';
+import {switchNodeContent, wipeNode, pluralSelector, deleteNode} from './service.js';
 
 const CARD_TEMPLATE = document.querySelector('#card').content;
 const IMAGE_WIDTH = 45;
@@ -33,6 +33,10 @@ function generateFeaturesClasses (promoObjectFeatures) {
 }
 
 function featuresChecker (templateNode, promoObjectFeatures) {
+  if(promoObjectFeatures.length == 0) {
+    deleteNode(templateNode);
+    return '';
+  }
   return [...templateNode.querySelectorAll(`${generateFeaturesClasses(promoObjectFeatures)}`)];
 }
 
