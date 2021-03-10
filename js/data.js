@@ -51,8 +51,8 @@ function makeGalleryArray (start, end) {
 }
 
 function generatePromo () {
-  const coordinatesX = getRandomNumberFloat(COORDINATE_X_MIN, COORDINATE_X_MAX, COORDINATES_DIGITALS_AMOUNT);
-  const coordinatesY = getRandomNumberFloat(COORDINATE_Y_MIN, COORDINATE_Y_MAX, COORDINATES_DIGITALS_AMOUNT);
+  const lat = getRandomNumberFloat(COORDINATE_X_MIN, COORDINATE_X_MAX, COORDINATES_DIGITALS_AMOUNT);
+  const lng = getRandomNumberFloat(COORDINATE_Y_MIN, COORDINATE_Y_MAX, COORDINATES_DIGITALS_AMOUNT);
 
   const promoObject = {
     author: {
@@ -60,7 +60,7 @@ function generatePromo () {
     },
     offer: {
       title: getRandomArrayElement(TITLES),
-      address: `${coordinatesX}, ${coordinatesY}`,
+      address: `${lat}, ${lng}`,
       price: getRandomNumber(MIN_PRICE, MAX_PRICE),
       type: getRandomArrayElement(PROMO_TYPE),
       rooms: getRandomNumber(MIN_ROOMS, MAX_ROOMS),
@@ -71,8 +71,8 @@ function generatePromo () {
       photos: makeGalleryArray(MIN_GALLERY_LENGTH, MAX_GALLERY_LENGTH),
     },
     location: {
-      lng: coordinatesY,
-      lat: coordinatesX,
+      lng,
+      lat,
     },
   }
 
