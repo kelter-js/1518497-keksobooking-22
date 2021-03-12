@@ -1,8 +1,9 @@
 /* eslint-disable */
 import {onMapLoad, ADDRESS_ELEMENT} from './page-enabler.js';
 import {setNodeProperty} from './service.js';
-import {generatedPromos} from './data.js';
+import {generatedPromos} from './get-data.js';
 import {insertPromo} from './insert-promo.js';
+import {onFailToLoad} from './error.js';
 
 const TOKYO_LOCATION = {
   lat: 35.6894,
@@ -36,6 +37,10 @@ const PIN_ICON = L.icon({
 function onPinMove (evt) {
   const {lat: coordinatesX, lng: coordinatesY} = evt.target.getLatLng();
   setNodeProperty(ADDRESS_ELEMENT, 'value', `${coordinatesX.toFixed(DIGITALS_AFTER_POINT)}, ${coordinatesY.toFixed(DIGITALS_AFTER_POINT)}`);
+}
+
+function setMarkerCoordinates (marker, {lat, lng}) {
+  marker.setLatLng({lat, lng});
 }
 
 const map = L.map('map-canvas')
@@ -74,8 +79,8 @@ generatedPromos.then((result) => {
       .addTo(map)
       .bindPopup(insertPromo({author, offer}));
   });
-})
+}).catch(onFailToLoad);
 
-export {map}
+export {map, setMarkerCoordinates, marker, TOKYO_CENTER_LOCATION}
 
 /* eslint-enable */

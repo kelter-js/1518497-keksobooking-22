@@ -1,5 +1,3 @@
-import {onFailToLoad} from './error.js';
-
 async function loadPromo(url) {
   const response = await fetch(url);
 
@@ -11,5 +9,5 @@ async function loadPromo(url) {
   throw new Error(response.status);
 }
 
-const generatedPromos = loadPromo('https://22.javascript.pages.academy/keksobooking/data').catch(onFailToLoad);
+const generatedPromos = loadPromo('https://22.javascript.pages.academy/keksobooking/data');
 export {generatedPromos};

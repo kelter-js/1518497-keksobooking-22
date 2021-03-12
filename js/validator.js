@@ -96,3 +96,5 @@ PRICE_BY_NIGHT.addEventListener('input', onElementInput);
 CHECKOUT_TIME_FIELDSET.addEventListener('change', onChangeCheckTime(CHECKOUT_TIME, CHECKIN_TIME));
 TYPE_SELECT_ELEMENT.addEventListener('change', onChangeType(PRICE_BY_NIGHT));
 AMOUNT_OF_ROOMS.addEventListener('change', onChangeSyncGroupElements(AMOUNT_OF_ROOMS, GUESTS_AMOUNT_ELEMENT, SYNC_GROUP_OPTIONS));
+
+export {onChangeSyncGroupElements, AMOUNT_OF_ROOMS, GUESTS_AMOUNT_ELEMENT, SYNC_GROUP_OPTIONS}
