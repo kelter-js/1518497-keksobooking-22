@@ -1,19 +1,20 @@
 /* eslint-disable */
 import {onMapLoad, ADDRESS_ELEMENT} from './page-enabler.js';
 import {setNodeProperty} from './service.js';
-import {generateBunchPromos} from './data.js';
+import {generatedPromos} from './get-data.js';
 import {insertPromo} from './insert-promo.js';
-
-const generatedPromos = generateBunchPromos();
+import {onFailToLoad} from './error.js';
 
 const TOKYO_LOCATION = {
   lat: 35.6894,
   lng: 139.692,
 };
+
 const TOKYO_CENTER_LOCATION = {
   lat: 35.65631,
   lng: 139.75671,
 };
+
 const MAP_INSTANT_ZOOM = 10;
 const MAIN_ICON_SIZES = [42, 42];
 const MAIN_ICON_ANCHOR_COORDINATES = [21, 42];
@@ -26,6 +27,7 @@ const MAIN_PIN_ICON = L.icon({
   iconSize: MAIN_ICON_SIZES,
   iconAnchor: MAIN_ICON_ANCHOR_COORDINATES,
 });
+
 const PIN_ICON = L.icon({
   iconUrl: './img/pin.svg',
   iconSize: ICON_SIZES,
@@ -35,6 +37,10 @@ const PIN_ICON = L.icon({
 function onPinMove (evt) {
   const {lat: coordinatesX, lng: coordinatesY} = evt.target.getLatLng();
   setNodeProperty(ADDRESS_ELEMENT, 'value', `${coordinatesX.toFixed(DIGITALS_AFTER_POINT)}, ${coordinatesY.toFixed(DIGITALS_AFTER_POINT)}`);
+}
+
+function setMarkerCoordinates (marker, {lat, lng}) {
+  marker.setLatLng({lat, lng});
 }
 
 const map = L.map('map-canvas')
@@ -60,19 +66,21 @@ L.tileLayer(
   },
 ).addTo(map);
 
-generatedPromos.forEach(({author, offer, location}) => {
-  const marker = L.marker(
-    location,
-    {
-      icon: PIN_ICON,
-    },
-  );
+generatedPromos.then((result) => {
+  result.forEach(({author, offer, location}) => {
+    const marker = L.marker(
+      location,
+      {
+        icon: PIN_ICON,
+      },
+    );
 
-  marker
-    .addTo(map)
-    .bindPopup(insertPromo({author, offer}));
-});
+    marker
+      .addTo(map)
+      .bindPopup(insertPromo({author, offer}));
+  });
+}).catch(onFailToLoad);
 
-export {map}
+export {map, setMarkerCoordinates, marker, TOKYO_CENTER_LOCATION}
 
 /* eslint-enable */

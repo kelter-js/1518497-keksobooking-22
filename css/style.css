@@ -1023,6 +1023,90 @@ fieldset {
   overflow: hidden;
 }
 
+.modal {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  padding-left: 2%;
+  padding-right: 2%;
+  width: 100vw;
+  height: 0px;
+  display: flex;
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+  transition: height 1s ease;
+}
+
+.modal--animated {
+  height: 28px;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+.modal__header {
+  margin-top: 6px;
+  width: 68%;
+  font-size: 16px;
+  line-height: 16px;
+  color: cornsilk;
+}
+
+.modal__button-refresh {
+  margin-left: 1%;
+  width: 15%;
+  height: 80%;
+  margin-top: 3px;
+  text-align: center;
+  background: transparent;
+  border: 1px solid cornsilk;
+  color: cornsilk;
+}
+
+.modal__button-close {
+  position: absolute;
+  right: 2%;
+  top: 10%;
+  bottom: 10%;
+  width: 2%;
+  height: 80%;
+  background: transparent;
+  border: none;
+}
+
+.modal__button-close::after,
+.modal__button-close::before {
+  content: "";
+  position: absolute;
+  top: 9px;
+  right: 0px;
+  width: 27px;
+  height: 4px;
+  background-color: cornsilk;
+}
+
+.modal__button-close::before {
+  transform: rotate(45deg);
+}
+
+.modal__button-close::after {
+  transform: rotate(-45deg);
+}
+
+.promo--fail {
+  padding-top: 50px;
+}
+
 .hidden {
   display: none;
 }
