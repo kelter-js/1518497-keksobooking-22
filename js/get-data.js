@@ -3,6 +3,7 @@ async function loadPromo(url) {
 
   if (response.ok) {
     const result = await response.json();
+    result.length = 10;
     return result;
   }
 

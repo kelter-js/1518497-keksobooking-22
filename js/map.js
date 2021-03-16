@@ -5,6 +5,8 @@ import {generatedPromos} from './get-data.js';
 import {insertPromo} from './insert-promo.js';
 import {onFailToLoad} from './error.js';
 
+const createdMarkers = [];
+
 const TOKYO_LOCATION = {
   lat: 35.6894,
   lng: 139.692,
@@ -66,8 +68,9 @@ L.tileLayer(
   },
 ).addTo(map);
 
-generatedPromos.then((result) => {
-  result.forEach(({author, offer, location}) => {
+async function createMarkersOnMap (map, data, onFail) {
+  const promo = await data.catch(onFail);
+  promo.forEach(({author, offer, location}) => {
     const marker = L.marker(
       location,
       {
@@ -78,9 +81,15 @@ generatedPromos.then((result) => {
     marker
       .addTo(map)
       .bindPopup(insertPromo({author, offer}));
+      createdMarkers.push(marker);
   });
-}).catch(onFailToLoad);
+}
 
-export {map, setMarkerCoordinates, marker, TOKYO_CENTER_LOCATION}
+function removeMarkers (markers) {
+  markers.forEach((item) => item.remove());
+}
+
+createMarkersOnMap(map, generatedPromos, onFailToLoad);
+export {map, setMarkerCoordinates, marker, TOKYO_CENTER_LOCATION, createMarkersOnMap, removeMarkers, createdMarkers}
 
 /* eslint-enable */
