@@ -96,7 +96,6 @@ function filterByFeature (selectedFeatures) {
     if (offer.features.length == 0) {
       return false;
     }
-    console.log(selectedFeatures);
     return selectedFeatures.every((selectedFeature) => offer.features.includes(selectedFeature));
   }
 }
