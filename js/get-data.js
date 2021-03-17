@@ -1,10 +1,11 @@
+const START_INDEX = 0;
+const END_INDEX = 10;
 async function loadPromo(url) {
   const response = await fetch(url);
 
   if (response.ok) {
     const result = await response.json();
-    result.length = 10;
-    return result;
+    return result.slice(START_INDEX, END_INDEX);
   }
 
   throw new Error(response.status);

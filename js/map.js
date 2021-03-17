@@ -45,9 +45,13 @@ function setMarkerCoordinates (marker, {lat, lng}) {
   marker.setLatLng({lat, lng});
 }
 
-const map = L.map('map-canvas')
-.on('load', onMapLoad(TOKYO_CENTER_LOCATION))
-  .setView(TOKYO_LOCATION, MAP_INSTANT_ZOOM);
+function createMap () {
+  return L.map('map-canvas')
+    .on('load', onMapLoad(TOKYO_CENTER_LOCATION))
+    .setView(TOKYO_LOCATION, MAP_INSTANT_ZOOM);
+}
+
+const map = createMap();
 
 const marker = L.marker(
   TOKYO_CENTER_LOCATION,
@@ -86,7 +90,7 @@ async function createMarkersOnMap (map, data, onFail) {
 }
 
 function removeMarkers (markers) {
-  markers.forEach((item) => item.remove());
+  markers.map((marker) => marker.remove());
 }
 
 createMarkersOnMap(map, generatedPromos, onFailToLoad);
