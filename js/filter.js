@@ -21,7 +21,7 @@ const FILTER_PRICE_OPTIONS = {
 };
 
 function filterByPluralOptions (propertyName, option) {
-  return ({offer}) => offer[propertyName] == option || option === 'any' ? true : false;
+  return ({offer}) => (offer[propertyName] == option || option === 'any');
 }
 
 function filterByPrice (price) {
