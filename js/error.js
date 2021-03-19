@@ -1,4 +1,8 @@
-import {deleteClassFromNode, addClassToNode} from './service.js';
+import {
+  deleteClassFromNode,
+  addClassToNode
+} from './service.js';
+
 const LOGO_ELEMENT = document.querySelector('.promo');
 const MODAL_ELEMENT = document.querySelector('.modal');
 const MODAL_CLOSE = MODAL_ELEMENT.querySelector('.modal__button-close');

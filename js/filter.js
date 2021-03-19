@@ -1,27 +1,35 @@
 import {generatedPromos} from './get-data.js';
-import {createMarkersOnMap, map, removeMarkers, createdMarkers} from './map.js';
+
+import {
+  createMarkersOnMap,
+  clearMap
+} from './map.js';
+
 import {onFailToLoad} from './error.js';
 
-const FILTER = {
+const FILTER_ELEMENTS = {
   FORM_ELEMENT: document.querySelector('.map__filters'),
-  BY_TYPE: document.querySelector('#housing-type'),
-  BY_PRICE: document.querySelector('#housing-price'),
-  BY_ROOMS: document.querySelector('#housing-rooms'),
-  BY_GUESTS: document.querySelector('#housing-guests'),
-  BY_FEATURES: document.querySelector('#housing-features'),
-  LOW_PRICE_BY_NIGHT: 10000,
-  HIGH_PRICE_BY_NIGHT: 50000,
+  TYPE: document.querySelector('#housing-type'),
+  PRICE: document.querySelector('#housing-price'),
+  ROOMS: document.querySelector('#housing-rooms'),
+  GUESTS: document.querySelector('#housing-guests'),
+  FEATURES: document.querySelector('#housing-features'),
 };
+
+const FILTER_PRICE = {
+  MIN: 10000,
+  MAX: 50000,
+}
 
 const FILTER_PRICE_OPTIONS = {
   any: () => true,
-  low: (price) => price <= FILTER.LOW_PRICE_BY_NIGHT,
-  middle: (price) => price >= FILTER.LOW_PRICE_BY_NIGHT && price <= FILTER.HIGH_PRICE_BY_NIGHT,
-  high: (price) => price >= FILTER.HIGH_PRICE_BY_NIGHT,
+  low: (price) => price <= FILTER_PRICE.MIN,
+  middle: (price) => price >= FILTER_PRICE.MIN && price <= FILTER_PRICE.MAX,
+  high: (price) => price >= FILTER_PRICE.MAX,
 };
 
 function filterByPluralOptions (propertyName, option) {
-  return ({offer}) => (offer[propertyName] == option || option === 'any');
+  return ({offer}) => (offer[propertyName] === option || option === 'any');
 }
 
 function filterByPrice (price) {
@@ -32,16 +40,11 @@ function getCheckedFeatures (node) {
   return [...node.querySelectorAll('input[type="checkbox"]:checked')].map((item) => item.value);
 }
 
-function clearMap (map, markers) {
-  removeMarkers(markers);
-  map.closePopup();
-}
-
 function filterByField (loadedData) {
   return async () => {
     const promo = await loadedData;
-    clearMap(map, createdMarkers);
-    createMarkersOnMap(map, applyFilters(promo) ,onFailToLoad);
+    clearMap();
+    createMarkersOnMap(applyFilters(promo) ,onFailToLoad);
   }
 }
 
@@ -50,11 +53,11 @@ function filterByFeature (selectedFeatures) {
 }
 
 function applyFilters (promos) {
-  const type = FILTER.BY_TYPE.value;
-  const price = FILTER.BY_PRICE.value;
-  const rooms = FILTER.BY_ROOMS.value;
-  const guests = FILTER.BY_GUESTS.value;
-  const features = getCheckedFeatures(FILTER.BY_FEATURES);
+  const type = FILTER_ELEMENTS.TYPE.value;
+  const price = FILTER_ELEMENTS.PRICE.value;
+  const rooms = FILTER_ELEMENTS.ROOMS.value === 'any' ? 'any' : +FILTER_ELEMENTS.ROOMS.value;
+  const guests = FILTER_ELEMENTS.GUESTS.value === 'any' ? 'any' : +FILTER_ELEMENTS.GUESTS.value;
+  const features = getCheckedFeatures(FILTER_ELEMENTS.FEATURES);
 
   const filteredPromos = promos
     .filter(filterByPluralOptions('type', type))
@@ -66,6 +69,6 @@ function applyFilters (promos) {
 }
 
 
-FILTER.FORM_ELEMENT.addEventListener('change', filterByField(generatedPromos));
+FILTER_ELEMENTS.FORM_ELEMENT.addEventListener('change', filterByField(generatedPromos));
 
 export {getCheckedFeatures}

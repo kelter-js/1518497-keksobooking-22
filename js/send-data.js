@@ -1,8 +1,23 @@
 
 import {deleteNode} from './service.js';
-import {ADDRESS_ELEMENT, setCurrentAddress} from './page-enabler.js';
-import {setMarkerCoordinates, marker, TOKYO_CENTER_LOCATION} from './map.js';
-import {onChangeSyncGroupElements, AMOUNT_OF_ROOMS, GUESTS_AMOUNT_ELEMENT, SYNC_GROUP_OPTIONS} from './validator.js';
+
+import {
+  ADDRESS_ELEMENT,
+  setCurrentAddress
+} from './page-enabler.js';
+
+import {
+  setMarkerCoordinates,
+  marker,
+  TOKYO_CENTER_LOCATION
+} from './map.js';
+
+import {
+  onChangeSyncGroupElements,
+  AMOUNT_OF_ROOMS,
+  GUESTS_AMOUNT_ELEMENT,
+  SYNC_GROUP_OPTIONS
+} from './validator.js';
 
 const PROMO_FORM_ELEMENT = document.querySelector('.ad-form');
 const FILTERS_FORM_ELEMENT = document.querySelector('.map__filters');

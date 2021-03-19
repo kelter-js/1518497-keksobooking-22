@@ -1,11 +1,13 @@
 /* eslint-disable */
-import {onMapLoad, ADDRESS_ELEMENT} from './page-enabler.js';
+import {
+  onMapLoad,
+  ADDRESS_ELEMENT
+} from './page-enabler.js';
+
 import {setNodeProperty} from './service.js';
 import {generatedPromos} from './get-data.js';
 import {insertPromo} from './insert-promo.js';
 import {onFailToLoad} from './error.js';
-
-const createdMarkers = [];
 
 const TOKYO_LOCATION = {
   lat: 35.6894,
@@ -65,6 +67,8 @@ marker.addTo(map);
 
 marker.on('move', onPinMove);
 
+const createdMarkers = L.layerGroup().addTo(map);
+
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   {
@@ -72,7 +76,7 @@ L.tileLayer(
   },
 ).addTo(map);
 
-async function createMarkersOnMap (map, data, onFail) {
+async function createMarkersOnMap (data, onFail) {
   const promo = await data.catch(onFail);
   promo.forEach(({author, offer, location}) => {
     const marker = L.marker(
@@ -83,17 +87,25 @@ async function createMarkersOnMap (map, data, onFail) {
     );
 
     marker
-      .addTo(map)
+      .addTo(createdMarkers)
       .bindPopup(insertPromo({author, offer}));
-      createdMarkers.push(marker);
   });
 }
 
-function removeMarkers (markers) {
-  markers.map((marker) => marker.remove());
+
+function clearMap () {
+  createdMarkers.clearLayers();
+  map.closePopup();
 }
 
-createMarkersOnMap(map, generatedPromos, onFailToLoad);
-export {map, setMarkerCoordinates, marker, TOKYO_CENTER_LOCATION, createMarkersOnMap, removeMarkers, createdMarkers}
+createMarkersOnMap(generatedPromos, onFailToLoad);
+
+export {
+  setMarkerCoordinates,
+  marker,
+  TOKYO_CENTER_LOCATION,
+  createMarkersOnMap,
+  clearMap
+}
 
 /* eslint-enable */

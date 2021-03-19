@@ -1,5 +1,15 @@
-import {PROMO_ELEMENT, FILTER_ELEMENT, PROMO_FIELDSET_ELEMENTS, FILTER_SELECT_ELEMENTS} from './page-disabler.js';
-import {deleteClassFromNode, setElementsProperty, setNodeProperty} from './service.js';
+import {
+  PROMO_ELEMENT,
+  FILTER_ELEMENT,
+  PROMO_FIELDSET_ELEMENTS,
+  FILTER_SELECT_ELEMENTS
+} from './page-disabler.js';
+
+import {
+  deleteClassFromNode,
+  setElementsProperty,
+  setNodeProperty
+} from './service.js';
 
 const ENABLE_CONDITION = true;
 const DISABLE_CONDITION = false;
