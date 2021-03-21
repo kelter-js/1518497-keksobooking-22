@@ -1,4 +1,9 @@
-import {switchNodeContent, wipeNode, pluralSelector, deleteNode} from './service.js';
+import {
+  switchNodeContent,
+  wipeNode,
+  pluralSelector,
+  deleteNode
+} from './service.js';
 
 const CARD_TEMPLATE = document.querySelector('#card').content;
 const IMAGE_WIDTH = 45;

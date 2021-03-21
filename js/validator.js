@@ -1,4 +1,10 @@
-import {setNodeProperty, setElementProperties, pluralSelector, wipeNode, setNodeContent} from './service.js';
+import {
+  setNodeProperty,
+  setElementProperties,
+  pluralSelector,
+  wipeNode,
+  setNodeContent
+} from './service.js';
 
 const TYPE_PRICES = [
   0,

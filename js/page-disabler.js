@@ -1,4 +1,7 @@
-import {addClassToNode, setElementsProperty} from './service.js';
+import {
+  addClassToNode,
+  setElementsProperty
+} from './service.js';
 
 const PROMO_ELEMENT = document.querySelector('.ad-form');
 const FILTER_ELEMENT = document.querySelector('.map__filters');
@@ -15,5 +18,11 @@ function pageDisabler () {
 
 pageDisabler();
 
-export {pageDisabler, PROMO_ELEMENT, FILTER_ELEMENT, PROMO_FIELDSET_ELEMENTS, FILTER_SELECT_ELEMENTS};
+export {
+  pageDisabler,
+  PROMO_ELEMENT,
+  FILTER_ELEMENT,
+  PROMO_FIELDSET_ELEMENTS,
+  FILTER_SELECT_ELEMENTS
+};
 
