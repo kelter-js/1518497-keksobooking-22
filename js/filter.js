@@ -1,3 +1,4 @@
+/* global _:readonly */
 import {generatedPromos} from './get-data.js';
 
 import {
@@ -5,7 +6,7 @@ import {
   clearMap
 } from './map.js';
 
-import {onFailToLoad} from './error.js';
+const RENDER_DELAY = 500;
 
 const FILTER_ELEMENTS = {
   FORM_ELEMENT: document.querySelector('.map__filters'),
@@ -40,12 +41,8 @@ function getCheckedFeatures (node) {
   return [...node.querySelectorAll('input[type="checkbox"]:checked')].map((item) => item.value);
 }
 
-function filterByField (loadedData) {
-  return async () => {
-    const promo = await loadedData;
-    clearMap();
-    createMarkersOnMap(applyFilters(promo) ,onFailToLoad);
-  }
+async function filterByField (loadedData) {
+  createMarkersOnMap(applyFilters(await loadedData));
 }
 
 function filterByFeature (selectedFeatures) {
@@ -65,10 +62,10 @@ function applyFilters (promos) {
     .filter(filterByPluralOptions('rooms', rooms))
     .filter(filterByPluralOptions('guests', guests))
     .filter(filterByFeature(features));
-  return Promise.resolve(filteredPromos);
+  return filteredPromos;
 }
 
-
-FILTER_ELEMENTS.FORM_ELEMENT.addEventListener('change', filterByField(generatedPromos));
+FILTER_ELEMENTS.FORM_ELEMENT.addEventListener('change', clearMap);
+FILTER_ELEMENTS.FORM_ELEMENT.addEventListener('change', _.debounce(() => filterByField(generatedPromos), RENDER_DELAY));
 
 export {getCheckedFeatures}
