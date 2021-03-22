@@ -76,8 +76,7 @@ L.tileLayer(
   },
 ).addTo(map);
 
-async function createMarkersOnMap (data, onFail) {
-  const promo = await data.catch(onFail);
+async function createMarkersOnMap (promo) {
   promo.forEach(({author, offer, location}) => {
     const marker = L.marker(
       location,
@@ -98,7 +97,7 @@ function clearMap () {
   map.closePopup();
 }
 
-createMarkersOnMap(generatedPromos, onFailToLoad);
+generatedPromos.then((promo) => createMarkersOnMap(promo)).catch(onFailToLoad);
 
 export {
   setMarkerCoordinates,
