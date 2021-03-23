@@ -1,4 +1,8 @@
-import {deleteClassFromNode} from './service.js';
+import {
+  deleteClassFromNode,
+  setNodeProperty,
+  addClassToNode
+} from './service.js';
 
 const FILE_TYPES = [
   'gif',
@@ -11,6 +15,7 @@ const SELECT_AVATAR_ELEMENT = document.querySelector('.ad-form-header__input');
 const AVATAR_PREVIEW_ELEMENT = document.querySelector('.ad-form-header__preview img');
 const SELECT_PROMO_PHOTO_ELEMENT = document.querySelector('.ad-form__input');
 const PROMO_PHOTO_PREVIEW_ELEMENT = document.querySelector('.ad-form__photo img');
+const DEFAULT_IMAGE_PATH = 'img/muffin-grey.svg';
 
 function onReadFile (destination, reader) {
   return () => {
@@ -22,6 +27,12 @@ function createReader (file, destination) {
   const reader = new FileReader();
   reader.readAsDataURL(file);
   reader.addEventListener('load', onReadFile(destination, reader));
+}
+
+function resetPhotoElements () {
+  addClassToNode(PROMO_PHOTO_PREVIEW_ELEMENT, 'visually-hidden');
+  setNodeProperty(PROMO_PHOTO_PREVIEW_ELEMENT, 'src', '');
+  setNodeProperty(AVATAR_PREVIEW_ELEMENT, 'src', DEFAULT_IMAGE_PATH);
 }
 
 function createPhotoPreview (destination) {
@@ -39,3 +50,5 @@ function createPhotoPreview (destination) {
 
 SELECT_AVATAR_ELEMENT.addEventListener('change', createPhotoPreview(AVATAR_PREVIEW_ELEMENT));
 SELECT_PROMO_PHOTO_ELEMENT.addEventListener('change', createPhotoPreview(PROMO_PHOTO_PREVIEW_ELEMENT));
+
+export {resetPhotoElements};

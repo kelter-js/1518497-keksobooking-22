@@ -1,6 +1,8 @@
 
 import {deleteNode} from './service.js';
 
+import {resetPhotoElements} from './create-photo-preview.js';
+
 import {
   ADDRESS_ELEMENT,
   setCurrentAddress
@@ -69,6 +71,7 @@ function resetData () {
   setMarkerCoordinates(marker, TOKYO_CENTER_LOCATION);
   setCurrentAddress(ADDRESS_ELEMENT, TOKYO_CENTER_LOCATION);
   onChangeSyncGroupElements(AMOUNT_OF_ROOMS, GUESTS_AMOUNT_ELEMENT, SYNC_GROUP_OPTIONS)();
+  resetPhotoElements();
 }
 
 function setUserFormSubmit (onSuccess, onFail) {
