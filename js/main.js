@@ -8,3 +8,4 @@ import './page-disabler.js';
 import './page-enabler.js';
 import './send-data.js';
 import './filter.js';
+import './create-photo-preview.js';
