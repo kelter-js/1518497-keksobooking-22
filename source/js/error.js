@@ -11,7 +11,7 @@ const LOGO_ELEMENT_FAIL_CLASS = 'promo--fail';
 const MODAL_ELEMENT_ANIMATION_CLASS = 'modal--animated';
 const HIDE_ELEMENT_CLASS = 'visually-hidden';
 
-function switchHandlers (elements, eventName, handlers, needAdd) {
+const switchHandlers = (elements, eventName, handlers, needAdd) => {
   elements.map((element, index) => needAdd ? (
     element.addEventListener(eventName, handlers[index])
   ) : (
@@ -20,18 +20,16 @@ function switchHandlers (elements, eventName, handlers, needAdd) {
   );
 }
 
-function closeModal () {
+const onCloseModal = () => {
   addClassToNode(this.parentElement, HIDE_ELEMENT_CLASS);
-  switchHandlers([MODAL_CLOSE, MODAL_REFRESH], 'click', [closeModal, refreshPage]);
+  switchHandlers([MODAL_CLOSE, MODAL_REFRESH], 'click', [onCloseModal, onRefreshPage]);
 }
 
-function refreshPage () {
-  document.location.reload();
-}
+const onRefreshPage = () => document.location.reload();
 
-function onFailToLoad () {
+const onFailToLoad = () => {
   deleteClassFromNode(MODAL_ELEMENT, HIDE_ELEMENT_CLASS);
-  switchHandlers([MODAL_CLOSE, MODAL_REFRESH], 'click', [closeModal, refreshPage], true);
+  switchHandlers([MODAL_CLOSE, MODAL_REFRESH], 'click', [onCloseModal, onRefreshPage], true);
   addClassToNode(LOGO_ELEMENT, LOGO_ELEMENT_FAIL_CLASS);
   addClassToNode(MODAL_ELEMENT, MODAL_ELEMENT_ANIMATION_CLASS);
 }

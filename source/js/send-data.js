@@ -11,7 +11,8 @@ import {
 import {
   setMarkerCoordinates,
   marker,
-  TOKYO_CENTER_LOCATION
+  TOKYO_CENTER_LOCATION,
+  createMarkersOnMap
 } from './map.js';
 
 import {
@@ -21,6 +22,8 @@ import {
   SYNC_GROUP_OPTIONS
 } from './validator.js';
 
+import {generatedPromos} from './get-data.js';
+
 const PROMO_FORM_ELEMENT = document.querySelector('.ad-form');
 const FILTERS_FORM_ELEMENT = document.querySelector('.map__filters');
 const FORM_RESET_BUTTON = document.querySelector('.ad-form__reset');
@@ -28,50 +31,55 @@ const PAGE_INNER = document.querySelector('body');
 const SUCCESS_MESSAGE_ELEMENT = document.querySelector('#success').content;
 const ERROR_MESSAGE_ELEMENT = document.querySelector('#error').content;
 
-function createMessage (element, selector) {
+const createMessage = (element, selector) => {
   return element.querySelector(`.${selector}`).cloneNode(true);
 }
 
-function onKeydownMessage (node) {
+const onKeydownMessage = (node) => {
   return (evt) => evt.code === 'Escape' ? deleteNode(node) : '';
 }
 
-function insertErrorMessage (target) {
+const onClickRemoveMessage = (message) => {
+  return () => deleteNode(message);
+}
+
+const insertErrorMessage = (target) => {
   target.append(createMessage(ERROR_MESSAGE_ELEMENT, 'error'));
   const message = target.querySelector('.error');
   const errorButton = target.querySelector('.error__button');
 
-  document.addEventListener('keydown', onKeydownMessage(message));
-  document.addEventListener('click', () => deleteNode(message));
-  errorButton.addEventListener('click', () => deleteNode(message));
+  document.addEventListener('keydown', onKeydownMessage(message), { once: true });
+  document.addEventListener('click', onClickRemoveMessage(message), { once: true });
+  errorButton.addEventListener('click', onClickRemoveMessage(message));
 }
 
-function insertSuccessMessage (target) {
+const insertSuccessMessage = (target) => {
   const message = createMessage(SUCCESS_MESSAGE_ELEMENT, 'success');
   target.append(message);
-  document.addEventListener('keydown', onKeydownMessage(message));
-  document.addEventListener('click', () => deleteNode(message));
+  document.addEventListener('keydown', onKeydownMessage(message), { once: true });
+  document.addEventListener('click', onClickRemoveMessage(message), { once: true });
 }
 
-function onFail () {
+const onFail = () => {
   insertErrorMessage(PAGE_INNER);
 }
 
-function onSuccess () {
+const onSuccess = () => {
   resetData();
   insertSuccessMessage(PAGE_INNER);
 }
 
-function resetData () {
+const resetData = () => {
   PROMO_FORM_ELEMENT.reset();
   FILTERS_FORM_ELEMENT.reset();
   setMarkerCoordinates(marker, TOKYO_CENTER_LOCATION);
   setCurrentAddress(ADDRESS_ELEMENT, TOKYO_CENTER_LOCATION);
   onChangeSyncGroupElements(AMOUNT_OF_ROOMS, GUESTS_AMOUNT_ELEMENT, SYNC_GROUP_OPTIONS)();
   resetPhotoElements();
+  generatedPromos.then((promotions) => createMarkersOnMap(promotions));
 }
 
-function setUserFormSubmit (onSuccess, onFail) {
+const setUserFormSubmit = (onSuccess, onFail) => {
   PROMO_FORM_ELEMENT.addEventListener('submit', (evt) => {
     const target = evt.target;
     evt.preventDefault();

@@ -17,11 +17,11 @@ const ENABLE_CONDITION = true;
 const DISABLE_CONDITION = false;
 const ADDRESS_ELEMENT = document.querySelector('#address');
 
-function setCurrentAddress (inputElement, {lat, lng}) {
+const setCurrentAddress = (inputElement, {lat, lng}) => {
   setNodeProperty(inputElement, 'value', `${lat}, ${lng}`);
 }
 
-function onMapLoad ({lat, lng}) {
+const onMapLoad = ({lat, lng}) => {
   return () => {
     deleteClassFromNode(PROMO_ELEMENT, PROMO_ELEMENT_DISABLE_CLASS);
     deleteClassFromNode(FILTER_ELEMENT, FILTER_ELEMENT_DISABLE_CLASS);
@@ -31,7 +31,6 @@ function onMapLoad ({lat, lng}) {
     setNodeProperty(ADDRESS_ELEMENT, 'readOnly', ENABLE_CONDITION);
   }
 }
-
 
 export {
   onMapLoad,

@@ -19,23 +19,23 @@ const SELECT_PROMO_PHOTO_ELEMENT = document.querySelector('.ad-form__input');
 const PROMO_PHOTO_PREVIEW_ELEMENT = document.querySelector('.ad-form__photo img');
 const DEFAULT_IMAGE_PATH = 'img/muffin-grey.svg';
 
-function onReadFile (destination, reader) {
+const onReadFile = (destination, reader) => {
   return () => destination.src = reader.result;
 }
 
-function createReader (file, destination) {
+const createReader = (file, destination) => {
   const reader = new FileReader();
   reader.readAsDataURL(file);
   reader.addEventListener('load', onReadFile(destination, reader));
 }
 
-function resetPhotoElements () {
+const resetPhotoElements = () => {
   addClassToNode(PROMO_PHOTO_PREVIEW_ELEMENT, HIDE_ELEMENT_CLASS);
   setNodeProperty(PROMO_PHOTO_PREVIEW_ELEMENT, 'src', '');
   setNodeProperty(AVATAR_PREVIEW_ELEMENT, 'src', DEFAULT_IMAGE_PATH);
 }
 
-function createPhotoPreview (destination) {
+const createPhotoPreview = (destination) => {
   return (evt) => {
     const [photo] = evt.target.files;
     const photoName = photo.name.toLowerCase();

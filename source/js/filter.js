@@ -22,6 +22,8 @@ const FILTER_PRICE = {
   MAX: 50000,
 }
 
+const MAX_PROMOS = 10;
+
 const FILTER_PRICE_OPTIONS = {
   any: () => true,
   low: (price) => price <= FILTER_PRICE.MIN,
@@ -29,27 +31,21 @@ const FILTER_PRICE_OPTIONS = {
   high: (price) => price >= FILTER_PRICE.MAX,
 };
 
-function filterByPluralOptions (comparedPromo, propertyName, option) {
+const filterByPluralOptions = (comparedPromo, propertyName, option) => {
   return (comparedPromo[propertyName] === option || option === 'any');
 }
 
-function filterByPrice (comparedPromo, price) {
-  return FILTER_PRICE_OPTIONS[price](comparedPromo.price);
-}
+const filterByPrice = (comparedPromo, price) => FILTER_PRICE_OPTIONS[price](comparedPromo.price);
 
-function getCheckedFeatures (node) {
-  return [...node.querySelectorAll('input[type="checkbox"]:checked')].map((item) => item.value);
-}
+const getCheckedFeatures = (node) => [...node.querySelectorAll('input[type="checkbox"]:checked')].map((item) => item.value);
 
-async function filterByField (loadedData) {
-  createMarkersOnMap(applyFilters(await loadedData));
-}
+const filterByField = async (loadedData) => createMarkersOnMap(applyFilters(await loadedData));
 
-function filterByFeature (comparedPromo, selectedFeatures) {
+const filterByFeature = (comparedPromo, selectedFeatures) => {
   return selectedFeatures.every((selectedFeature) => comparedPromo.features.includes(selectedFeature));
 }
 
-function filterPromos (...args) {
+const filterPromos = (...args) => {
   return ({offer}) => {
     return ((filterByPluralOptions(offer, 'type', args[0])) && (
       filterByPrice(offer, args[1])
@@ -63,13 +59,23 @@ function filterPromos (...args) {
   }
 }
 
-function applyFilters (promos) {
+const applyFilters = (promos) => {
   const type = FILTER_ELEMENTS.TYPE.value;
   const price = FILTER_ELEMENTS.PRICE.value;
   const rooms = FILTER_ELEMENTS.ROOMS.value === 'any' ? 'any' : +FILTER_ELEMENTS.ROOMS.value;
   const guests = FILTER_ELEMENTS.GUESTS.value === 'any' ? 'any' : +FILTER_ELEMENTS.GUESTS.value;
   const features = getCheckedFeatures(FILTER_ELEMENTS.FEATURES);
-  return promos.filter(filterPromos(type, price, rooms, guests, features));
+  const filter = promos.filter(filterPromos(type, price, rooms, guests, features));
+  const filteredPromos = [];
+  promos.map((promo) => {
+    if (filter.includes(promo)) {
+      filteredPromos.push(promo);
+      if (filteredPromos.length >= MAX_PROMOS) {
+        return filteredPromos;
+      }
+    }
+  })
+  return filteredPromos;
 }
 
 FILTER_ELEMENTS.FORM_ELEMENT.addEventListener('change', clearMap);

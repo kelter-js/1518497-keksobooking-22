@@ -46,16 +46,16 @@ const PROMO_PRICE_MESSAGE_WORDSET = {
   many: '',
 };
 
-function elementValiditySetter (element, validityMessage) {
+const elementValiditySetter = (element, validityMessage) => {
   element.setCustomValidity(validityMessage);
   element.reportValidity();
 }
 
-function onElementInput () {
-  elementValiditySetter(this, '');
+const onElementInput = (element) => {
+  return () => elementValiditySetter(element, '');
 }
 
-function onElementChange (wordset, min, max) {
+const onElementChange = (wordset, min, max) => {
   return (evt) => {
     const target = evt.currentTarget;
     const condition = target.type === PRICE_ELEMENT_TYPE;
@@ -65,18 +65,16 @@ function onElementChange (wordset, min, max) {
   }
 }
 
-function getCurrentPrice () {
-  return TYPE_PRICES[TYPE_SELECT_ELEMENT.selectedIndex];
-}
+const getCurrentPrice = () => TYPE_PRICES[TYPE_SELECT_ELEMENT.selectedIndex];
 
-function onChangeType (element) {
+const onChangeType = (element) => {
   return () => {
     const currentPrice = getCurrentPrice();
     setElementProperties(element, ['placeholder', 'min'], [currentPrice, currentPrice])
   }
 }
 
-function onChangeCheckTime (firstDependent, secondDependent) {
+const onChangeCheckTime = (firstDependent, secondDependent) => {
   return (evt) => {
     const index = evt.target.selectedIndex;
     setNodeProperty(firstDependent, 'selectedIndex', index);
@@ -84,7 +82,7 @@ function onChangeCheckTime (firstDependent, secondDependent) {
   }
 }
 
-function onChangeSyncGroupElements (mainGroup, syncGroup, options) {
+const onChangeSyncGroupElements = (mainGroup, syncGroup, options) => {
   return () => {
     wipeNode(syncGroup);
     setNodeContent(syncGroup, options[mainGroup.selectedIndex]);
@@ -96,9 +94,9 @@ setElementProperties(PRICE_BY_NIGHT, ['placeholder', 'min', 'required', 'type', 
 onChangeSyncGroupElements(AMOUNT_OF_ROOMS, GUESTS_AMOUNT_ELEMENT, SYNC_GROUP_OPTIONS)();
 
 PROMO_HEADER_ELEMENT.addEventListener('change', onElementChange(PROMO_HEADER_MESSAGE_WORDSET, MIN_PROMO_HEADER_LENGTH, MAX_PROMO_HEADER_LENGTH));
-PROMO_HEADER_ELEMENT.addEventListener('input', onElementInput);
+PROMO_HEADER_ELEMENT.addEventListener('input', onElementInput(PROMO_HEADER_ELEMENT));
 PRICE_BY_NIGHT.addEventListener('change', onElementChange(PROMO_PRICE_MESSAGE_WORDSET, TYPE_PRICES[TYPE_SELECT_ELEMENT.selectedIndex], MAX_PRICE_BY_NIGHT));
-PRICE_BY_NIGHT.addEventListener('input', onElementInput);
+PRICE_BY_NIGHT.addEventListener('input', onElementInput(PRICE_BY_NIGHT));
 CHECKOUT_TIME_FIELDSET.addEventListener('change', onChangeCheckTime(CHECKOUT_TIME, CHECKIN_TIME));
 TYPE_SELECT_ELEMENT.addEventListener('change', onChangeType(PRICE_BY_NIGHT));
 AMOUNT_OF_ROOMS.addEventListener('change', onChangeSyncGroupElements(AMOUNT_OF_ROOMS, GUESTS_AMOUNT_ELEMENT, SYNC_GROUP_OPTIONS));

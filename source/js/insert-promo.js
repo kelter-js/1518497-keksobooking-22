@@ -35,11 +35,9 @@ const PROMO_TYPE = {
   palace: 'Дворец',
 };
 
-function generateFeaturesClasses (promoObjectFeatures) {
-  return promoObjectFeatures.map((item) => `.popup__feature--${item}`);
-}
+const generateFeaturesClasses = (promoObjectFeatures) => promoObjectFeatures.map((item) => `.popup__feature--${item}`);
 
-function featuresChecker (templateNode, promoObjectFeatures) {
+const featuresChecker = (templateNode, promoObjectFeatures) => {
   if(!promoObjectFeatures.length) {
     deleteNode(templateNode);
     return '';
@@ -47,12 +45,12 @@ function featuresChecker (templateNode, promoObjectFeatures) {
   return [...templateNode.querySelectorAll(`${generateFeaturesClasses(promoObjectFeatures)}`)];
 }
 
-function featuresEnabler (templateNode, elements) {
+const featuresEnabler = (templateNode, elements) => {
   wipeNode(templateNode);
   templateNode.append(...elements);
 }
 
-function createPhoto (src) {
+const createPhoto = (src) => {
   const imageElement = document.createElement('img');
   imageElement.classList.add('popup__photo');
   imageElement.src = src;
@@ -62,13 +60,13 @@ function createPhoto (src) {
   return imageElement;
 }
 
-function insertPhotos (templateNode, className, promoObjectPhotos) {
+const insertPhotos = (templateNode, className, promoObjectPhotos) => {
   const subElement = findSubElement(templateNode,className);
   wipeNode(subElement);
   promoObjectPhotos.map((item) => subElement.append(createPhoto(item)));
 }
 
-function insertPromo (promo) {
+const insertPromo = (promo) => {
   const offer = promo.offer;
   const author = promo.author;
 

@@ -39,16 +39,14 @@ const PIN_ICON = L.icon({
   iconAnchor: ICON_ANCHOR_COORDINATES,
 });
 
-function onPinMove (evt) {
+const onPinMove = (evt) => {
   const {lat: coordinatesX, lng: coordinatesY} = evt.target.getLatLng();
   setNodeProperty(ADDRESS_ELEMENT, 'value', `${coordinatesX.toFixed(DECIMAL_DIGITS)}, ${coordinatesY.toFixed(DECIMAL_DIGITS)}`);
 }
 
-function setMarkerCoordinates (marker, {lat, lng}) {
-  marker.setLatLng({lat, lng});
-}
+const setMarkerCoordinates = (marker, {lat, lng}) => marker.setLatLng({lat, lng});
 
-function createMap () {
+const createMap = () => {
   return L.map('map-canvas')
     .on('load', onMapLoad(TOKYO_CENTER_LOCATION))
     .setView(TOKYO_LOCATION, MAP_INSTANT_ZOOM);
@@ -77,7 +75,7 @@ L.tileLayer(
   },
 ).addTo(map);
 
-async function createMarkersOnMap (promo) {
+const createMarkersOnMap = async (promo) => {
   promo.forEach(({author, offer, location}) => {
     const marker = L.marker(
       location,
@@ -92,8 +90,7 @@ async function createMarkersOnMap (promo) {
   });
 }
 
-
-function clearMap () {
+const clearMap = () => {
   createdMarkers.clearLayers();
   map.closePopup();
 }
