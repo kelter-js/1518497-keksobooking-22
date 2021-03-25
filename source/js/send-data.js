@@ -87,6 +87,8 @@ function setUserFormSubmit (onSuccess, onFail) {
       .then((response) => {
         if(response.ok) {
           onSuccess();
+        } else {
+          onFail();
         }
       })
       .catch(() => {
