@@ -10,8 +10,13 @@ function setNodeContent (node, elements) {
   elements.map((element) => node.append(element));
 }
 
-function switchNodeContent (condition, node, value = condition, property = 'textContent') {
-  condition ? node[property] = value : deleteNode(node);
+function findSubElement (node, subClass) {
+  return node.querySelector(subClass);
+}
+
+function switchSubNodeContent (condition, node, subClass, value = condition, property = 'textContent') {
+  const subElement = findSubElement(node, subClass);
+  condition ? subElement[property] = value : deleteNode(subElement);
 }
 
 function addClassToNode (node, nodeClass) {
@@ -34,7 +39,7 @@ function setElementProperties (element, names, values) {
   names.map((item, index) => element[item] = values[index])
 }
 
-function pluralSelector ({one, few, many}, selector, minValue, maxValue, firstCondition = selector == minValue, secondCondition = selector <= maxValue) {
+function pluralSelector ({one, few, many}, selector, minValue, maxValue, firstCondition = selector === minValue, secondCondition = selector <= maxValue) {
   if (firstCondition) {
     return one;
   }
@@ -45,7 +50,8 @@ function pluralSelector ({one, few, many}, selector, minValue, maxValue, firstCo
 }
 
 export {
-  switchNodeContent,
+  switchSubNodeContent,
+  findSubElement,
   deleteNode,
   wipeNode,
   addClassToNode,

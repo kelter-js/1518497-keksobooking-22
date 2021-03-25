@@ -1,11 +1,13 @@
 import {
-  switchNodeContent,
+  switchSubNodeContent,
+  findSubElement,
   wipeNode,
   pluralSelector,
   deleteNode
 } from './service.js';
 
 const CARD_TEMPLATE = document.querySelector('#card').content;
+
 const IMAGE_WIDTH = 45;
 const IMAGE_HEIGHT = 40;
 const IMAGE_DESCRIPTION = 'Фотография жилья';
@@ -38,7 +40,7 @@ function generateFeaturesClasses (promoObjectFeatures) {
 }
 
 function featuresChecker (templateNode, promoObjectFeatures) {
-  if(promoObjectFeatures.length == 0) {
+  if(!promoObjectFeatures.length) {
     deleteNode(templateNode);
     return '';
   }
@@ -60,37 +62,33 @@ function createPhoto (src) {
   return imageElement;
 }
 
-function insertPhotos (templateNode, promoObjectPhotos) {
-  wipeNode(templateNode);
-  promoObjectPhotos.map((item) => templateNode.append(createPhoto(item)));
+function insertPhotos (templateNode, className, promoObjectPhotos) {
+  const subElement = findSubElement(templateNode,className);
+  wipeNode(subElement);
+  promoObjectPhotos.map((item) => subElement.append(createPhoto(item)));
 }
 
 function insertPromo (promo) {
   const offer = promo.offer;
   const author = promo.author;
-  const templateInner = CARD_TEMPLATE.querySelector('.popup').cloneNode(true);
-  const templateTitle = templateInner.querySelector('.popup__title');
-  const templateAddress = templateInner.querySelector('.popup__text--address');
-  const templatePrice = templateInner.querySelector('.popup__text--price');
-  const templateType = templateInner.querySelector('.popup__type');
-  const templateCapacity = templateInner.querySelector('.popup__text--capacity');
-  const templateTime = templateInner.querySelector('.popup__text--time');
+
+  const templateInner = CARD_TEMPLATE.cloneNode(true);
   const templateFeatures = templateInner.querySelector('.popup__features');
-  const templateDescription = templateInner.querySelector('.popup__description');
-  const templatePhotos = templateInner.querySelector('.popup__photos');
-  const templateAvatar = templateInner.querySelector('.popup__avatar');
 
 
-  switchNodeContent(offer.title, templateTitle);
-  switchNodeContent(offer.address, templateAddress);
-  switchNodeContent(offer.price, templatePrice, `${offer.price} ₽/ночь`);
-  switchNodeContent(offer.type, templateType, PROMO_TYPE[offer.type]);
-  switchNodeContent(offer.rooms && offer.guests, templateCapacity, `${offer.rooms} ${pluralSelector(ROOM_WORD_SET, offer.rooms, MIN_ROOMS_SELECTOR, MIDDLE_ROOMS_SELECTOR)} для ${offer.guests} ${pluralSelector(GUEST_WORD_SET, offer.guests, MIN_GUESTS_SELECTOR, MAX_GUESTS_SELECTOR)}`);
-  switchNodeContent(offer.checkin && offer.checkout, templateTime, `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`);
+  const roomAmount = pluralSelector(ROOM_WORD_SET, offer.rooms, MIN_ROOMS_SELECTOR, MIDDLE_ROOMS_SELECTOR);
+  const guestsAmount = pluralSelector(GUEST_WORD_SET, offer.guests, MIN_GUESTS_SELECTOR, MAX_GUESTS_SELECTOR);
+
+  switchSubNodeContent(offer.title, templateInner, '.popup__title');
+  switchSubNodeContent(offer.address, templateInner, '.popup__text--address');
+  switchSubNodeContent(offer.price, templateInner, '.popup__text--price', `${offer.price} ₽/ночь`);
+  switchSubNodeContent(offer.type, templateInner, '.popup__type', PROMO_TYPE[offer.type]);
+  switchSubNodeContent(offer.rooms && offer.guests, templateInner, '.popup__text--capacity', `${offer.rooms} ${roomAmount} для ${offer.guests} ${guestsAmount}`);
+  switchSubNodeContent(offer.checkin && offer.checkout, templateInner, '.popup__text--time', `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`);
   featuresEnabler(templateFeatures, featuresChecker(templateFeatures, offer.features));
-  switchNodeContent(offer.description, templateDescription);
-  insertPhotos(templatePhotos, offer.photos);
-  switchNodeContent(author.avatar, templateAvatar, author.avatar, 'src');
+  switchSubNodeContent(offer.description, templateInner, '.popup__description');
+  insertPhotos(templateInner, '.popup__photos', offer.photos);
+  switchSubNodeContent(author.avatar, templateInner, '.popup__avatar', author.avatar, 'src');
 
   return templateInner;
 }

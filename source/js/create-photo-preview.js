@@ -4,6 +4,8 @@ import {
   addClassToNode
 } from './service.js';
 
+import {HIDE_ELEMENT_CLASS} from './error.js';
+
 const FILE_TYPES = [
   'gif',
   'jpg',
@@ -28,19 +30,19 @@ function createReader (file, destination) {
 }
 
 function resetPhotoElements () {
-  addClassToNode(PROMO_PHOTO_PREVIEW_ELEMENT, 'visually-hidden');
+  addClassToNode(PROMO_PHOTO_PREVIEW_ELEMENT, HIDE_ELEMENT_CLASS);
   setNodeProperty(PROMO_PHOTO_PREVIEW_ELEMENT, 'src', '');
   setNodeProperty(AVATAR_PREVIEW_ELEMENT, 'src', DEFAULT_IMAGE_PATH);
 }
 
 function createPhotoPreview (destination) {
   return (evt) => {
-    const photo = evt.target.files[0];
+    const [photo] = evt.target.files;
     const photoName = photo.name.toLowerCase();
     const formatCorrect = FILE_TYPES.some((name) => photoName.endsWith(name));
 
     if (formatCorrect) {
-      deleteClassFromNode(destination, 'visually-hidden');
+      deleteClassFromNode(destination, HIDE_ELEMENT_CLASS);
       createReader(photo, destination);
     }
   }

@@ -7,14 +7,22 @@ const LOGO_ELEMENT = document.querySelector('.promo');
 const MODAL_ELEMENT = document.querySelector('.modal');
 const MODAL_CLOSE = MODAL_ELEMENT.querySelector('.modal__button-close');
 const MODAL_REFRESH = MODAL_ELEMENT.querySelector('.modal__button-refresh');
+const LOGO_ELEMENT_FAIL_CLASS = 'promo--fail';
+const MODAL_ELEMENT_ANIMATION_CLASS = 'modal--animated';
+const HIDE_ELEMENT_CLASS = 'visually-hidden';
 
-function switchHandlers (elements, eventName, handlers, condition) {
-  condition ? elements.map((element, index) => element.addEventListener(eventName, handlers[index])) : elements.map((element, index) => element.removeEventListener(eventName, handlers[index]));
+function switchHandlers (elements, eventName, handlers, needAdd) {
+  elements.map((element, index) => needAdd ? (
+    element.addEventListener(eventName, handlers[index])
+  ) : (
+    element.removeEventListener(eventName, handlers[index])
+  ),
+  );
 }
 
 function closeModal () {
-  addClassToNode(this.parentElement, 'visually-hidden');
-  switchHandlers([MODAL_CLOSE, MODAL_REFRESH], 'click', [closeModal, refreshPage], false);
+  addClassToNode(this.parentElement, HIDE_ELEMENT_CLASS);
+  switchHandlers([MODAL_CLOSE, MODAL_REFRESH], 'click', [closeModal, refreshPage]);
 }
 
 function refreshPage () {
@@ -22,10 +30,13 @@ function refreshPage () {
 }
 
 function onFailToLoad () {
-  deleteClassFromNode(MODAL_ELEMENT, 'visually-hidden');
+  deleteClassFromNode(MODAL_ELEMENT, HIDE_ELEMENT_CLASS);
   switchHandlers([MODAL_CLOSE, MODAL_REFRESH], 'click', [closeModal, refreshPage], true);
-  addClassToNode(LOGO_ELEMENT, 'promo--fail');
-  addClassToNode(MODAL_ELEMENT, 'modal--animated');
+  addClassToNode(LOGO_ELEMENT, LOGO_ELEMENT_FAIL_CLASS);
+  addClassToNode(MODAL_ELEMENT, MODAL_ELEMENT_ANIMATION_CLASS);
 }
 
-export {onFailToLoad};
+export {
+  onFailToLoad,
+  HIDE_ELEMENT_CLASS
+};

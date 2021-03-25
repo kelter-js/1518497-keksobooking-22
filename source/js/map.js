@@ -1,4 +1,5 @@
-/* eslint-disable */
+/* global L*/
+
 import {
   onMapLoad,
   ADDRESS_ELEMENT
@@ -24,7 +25,7 @@ const MAIN_ICON_SIZES = [42, 42];
 const MAIN_ICON_ANCHOR_COORDINATES = [21, 42];
 const ICON_SIZES = [32, 32];
 const ICON_ANCHOR_COORDINATES = [16, 32];
-const DIGITALS_AFTER_POINT = 5;
+const DECIMAL_DIGITS = 5;
 
 const MAIN_PIN_ICON = L.icon({
   iconUrl: './img/main-pin.svg',
@@ -40,7 +41,7 @@ const PIN_ICON = L.icon({
 
 function onPinMove (evt) {
   const {lat: coordinatesX, lng: coordinatesY} = evt.target.getLatLng();
-  setNodeProperty(ADDRESS_ELEMENT, 'value', `${coordinatesX.toFixed(DIGITALS_AFTER_POINT)}, ${coordinatesY.toFixed(DIGITALS_AFTER_POINT)}`);
+  setNodeProperty(ADDRESS_ELEMENT, 'value', `${coordinatesX.toFixed(DECIMAL_DIGITS)}, ${coordinatesY.toFixed(DECIMAL_DIGITS)}`);
 }
 
 function setMarkerCoordinates (marker, {lat, lng}) {
@@ -107,4 +108,3 @@ export {
   clearMap
 }
 
-/* eslint-enable */

@@ -8,10 +8,12 @@ const FILTER_ELEMENT = document.querySelector('.map__filters');
 const PROMO_FIELDSET_ELEMENTS = PROMO_ELEMENT.querySelectorAll('fieldset');
 const FILTER_SELECT_ELEMENTS = FILTER_ELEMENT.querySelectorAll('select');
 const ENABLE_CONDITION = true;
+const PROMO_ELEMENT_DISABLE_CLASS = 'ad-form--disabled';
+const FILTER_ELEMENT_DISABLE_CLASS = 'map__filters--disabled';
 
 function pageDisabler () {
-  addClassToNode(PROMO_ELEMENT, 'ad-form--disabled');
-  addClassToNode(FILTER_ELEMENT, 'map__filters--disabled');
+  addClassToNode(PROMO_ELEMENT, PROMO_ELEMENT_DISABLE_CLASS);
+  addClassToNode(FILTER_ELEMENT, FILTER_ELEMENT_DISABLE_CLASS);
   setElementsProperty(PROMO_FIELDSET_ELEMENTS, 'disabled', ENABLE_CONDITION);
   setElementsProperty(FILTER_SELECT_ELEMENTS, 'disabled', ENABLE_CONDITION);
 }
@@ -23,6 +25,8 @@ export {
   PROMO_ELEMENT,
   FILTER_ELEMENT,
   PROMO_FIELDSET_ELEMENTS,
-  FILTER_SELECT_ELEMENTS
+  FILTER_SELECT_ELEMENTS,
+  PROMO_ELEMENT_DISABLE_CLASS,
+  FILTER_ELEMENT_DISABLE_CLASS
 };
 

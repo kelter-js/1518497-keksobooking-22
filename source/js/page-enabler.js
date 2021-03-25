@@ -2,7 +2,9 @@ import {
   PROMO_ELEMENT,
   FILTER_ELEMENT,
   PROMO_FIELDSET_ELEMENTS,
-  FILTER_SELECT_ELEMENTS
+  FILTER_SELECT_ELEMENTS,
+  PROMO_ELEMENT_DISABLE_CLASS,
+  FILTER_ELEMENT_DISABLE_CLASS
 } from './page-disabler.js';
 
 import {
@@ -21,8 +23,8 @@ function setCurrentAddress (inputElement, {lat, lng}) {
 
 function onMapLoad ({lat, lng}) {
   return () => {
-    deleteClassFromNode(PROMO_ELEMENT, 'ad-form--disabled');
-    deleteClassFromNode(FILTER_ELEMENT, 'map__filters--disabled');
+    deleteClassFromNode(PROMO_ELEMENT, PROMO_ELEMENT_DISABLE_CLASS);
+    deleteClassFromNode(FILTER_ELEMENT, FILTER_ELEMENT_DISABLE_CLASS);
     setElementsProperty(PROMO_FIELDSET_ELEMENTS, 'disabled', DISABLE_CONDITION);
     setElementsProperty(FILTER_SELECT_ELEMENTS, 'disabled', DISABLE_CONDITION);
     setCurrentAddress(ADDRESS_ELEMENT, {lat, lng});

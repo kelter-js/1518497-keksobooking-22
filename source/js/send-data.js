@@ -29,8 +29,7 @@ const SUCCESS_MESSAGE_ELEMENT = document.querySelector('#success').content;
 const ERROR_MESSAGE_ELEMENT = document.querySelector('#error').content;
 
 function createMessage (element, selector) {
-  const messageTemplate = element.querySelector(`.${selector}`).cloneNode(true);
-  return messageTemplate;
+  return element.querySelector(`.${selector}`).cloneNode(true);
 }
 
 function onKeydownMessage (node) {
@@ -87,9 +86,9 @@ function setUserFormSubmit (onSuccess, onFail) {
       .then((response) => {
         if(response.ok) {
           onSuccess();
-        } else {
-          onFail();
+          return;
         }
+        onFail();
       })
       .catch(() => {
         onFail();

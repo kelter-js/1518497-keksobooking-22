@@ -29,12 +29,12 @@ const FILTER_PRICE_OPTIONS = {
   high: (price) => price >= FILTER_PRICE.MAX,
 };
 
-function filterByPluralOptions (propertyName, option) {
-  return ({offer}) => (offer[propertyName] === option || option === 'any');
+function filterByPluralOptions (comparedPromo, propertyName, option) {
+  return (comparedPromo[propertyName] === option || option === 'any');
 }
 
-function filterByPrice (price) {
-  return ({offer}) => FILTER_PRICE_OPTIONS[price](offer.price);
+function filterByPrice (comparedPromo, price) {
+  return FILTER_PRICE_OPTIONS[price](comparedPromo.price);
 }
 
 function getCheckedFeatures (node) {
@@ -45,8 +45,22 @@ async function filterByField (loadedData) {
   createMarkersOnMap(applyFilters(await loadedData));
 }
 
-function filterByFeature (selectedFeatures) {
-  return ({offer}) => selectedFeatures.every((selectedFeature) => offer.features.includes(selectedFeature));
+function filterByFeature (comparedPromo, selectedFeatures) {
+  return selectedFeatures.every((selectedFeature) => comparedPromo.features.includes(selectedFeature));
+}
+
+function filterPromos (...args) {
+  return ({offer}) => {
+    return ((filterByPluralOptions(offer, 'type', args[0])) && (
+      filterByPrice(offer, args[1])
+    ) && (
+      filterByPluralOptions(offer, 'rooms', args[2])
+    ) && (
+      filterByPluralOptions(offer, 'guests', args[3])
+    ) && (
+      filterByFeature(offer, args[4])
+    ))
+  }
 }
 
 function applyFilters (promos) {
@@ -55,14 +69,7 @@ function applyFilters (promos) {
   const rooms = FILTER_ELEMENTS.ROOMS.value === 'any' ? 'any' : +FILTER_ELEMENTS.ROOMS.value;
   const guests = FILTER_ELEMENTS.GUESTS.value === 'any' ? 'any' : +FILTER_ELEMENTS.GUESTS.value;
   const features = getCheckedFeatures(FILTER_ELEMENTS.FEATURES);
-
-  const filteredPromos = promos
-    .filter(filterByPluralOptions('type', type))
-    .filter(filterByPrice(price))
-    .filter(filterByPluralOptions('rooms', rooms))
-    .filter(filterByPluralOptions('guests', guests))
-    .filter(filterByFeature(features));
-  return filteredPromos;
+  return promos.filter(filterPromos(type, price, rooms, guests, features));
 }
 
 FILTER_ELEMENTS.FORM_ELEMENT.addEventListener('change', clearMap);
