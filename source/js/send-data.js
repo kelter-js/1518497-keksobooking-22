@@ -33,6 +33,10 @@ function createMessage (element, selector) {
   return messageTemplate;
 }
 
+function onKeydownMessage (node) {
+  return (evt) => evt.code === 'Escape' ? deleteNode(node) : '';
+}
+
 function insertErrorMessage (target) {
   target.append(createMessage(ERROR_MESSAGE_ELEMENT, 'error'));
   const message = target.querySelector('.error');
@@ -41,12 +45,6 @@ function insertErrorMessage (target) {
   document.addEventListener('keydown', onKeydownMessage(message));
   document.addEventListener('click', () => deleteNode(message));
   errorButton.addEventListener('click', () => deleteNode(message));
-}
-
-function onKeydownMessage (node) {
-  return (evt) => {
-    evt.code == 'Escape' ? deleteNode(node) : '';
-  }
 }
 
 function insertSuccessMessage (target) {
@@ -103,4 +101,5 @@ FORM_RESET_BUTTON.addEventListener('click', (evt) => {
 })
 
 setUserFormSubmit(onSuccess, onFail);
+
 export {setUserFormSubmit};

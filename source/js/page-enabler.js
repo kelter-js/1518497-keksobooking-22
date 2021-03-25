@@ -31,4 +31,8 @@ function onMapLoad ({lat, lng}) {
 }
 
 
-export {onMapLoad, ADDRESS_ELEMENT, setCurrentAddress}
+export {
+  onMapLoad,
+  ADDRESS_ELEMENT,
+  setCurrentAddress
+}

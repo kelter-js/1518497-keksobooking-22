@@ -1,4 +1,5 @@
 const MAX_PROMOS_LENGTH = 10;
+
 async function loadPromo(url) {
   const response = await fetch(url);
 

@@ -18,9 +18,7 @@ const PROMO_PHOTO_PREVIEW_ELEMENT = document.querySelector('.ad-form__photo img'
 const DEFAULT_IMAGE_PATH = 'img/muffin-grey.svg';
 
 function onReadFile (destination, reader) {
-  return () => {
-    destination.src = reader.result;
-  }
+  return () => destination.src = reader.result;
 }
 
 function createReader (file, destination) {
